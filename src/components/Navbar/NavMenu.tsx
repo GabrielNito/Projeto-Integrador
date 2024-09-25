@@ -1,5 +1,3 @@
-"use client";
-
 import { ModeToggle } from "../ModeToggle";
 import { Button } from "../ui/button";
 import NavbarNotifications from "./NavbarNotifications";

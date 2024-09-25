@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { ModeToggle } from "../ModeToggle";
 import { NavMenu } from "./NavMenu";
