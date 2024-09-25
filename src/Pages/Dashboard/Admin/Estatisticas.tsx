@@ -7,13 +7,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import AtividadeForum from "@/components/Estatisticas/AtividadeForum";
-import TotalVisitantes from "@/components/Estatisticas/TotalVisitantes";
-import CrescimentoUsuarios from "@/components/Estatisticas/CrescimentoUsuarios";
-import AdministracaoPosts from "@/components/Estatisticas/AdministracaoPosts";
-import Sidebar from "@/components/Sidebar/Sidebar";
-import Retencao from "@/components/Estatisticas/Retencao";
 import { useEffect } from "react";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import TotalVisitantes from "@/components/Dashboard/Estatisticas/TotalVisitantes";
+import CrescimentoUsuarios from "@/components/Dashboard/Estatisticas/CrescimentoUsuarios";
+import Retencao from "@/components/Dashboard/Estatisticas/Retencao";
+import AtividadeForum from "@/components/Dashboard/Estatisticas/AtividadeForum";
+import AdministracaoPosts from "@/components/Dashboard/Estatisticas/AdministracaoPosts";
+import DashboardTitle from "@/components/Dashboard/DashboardTitle";
+import DashboardWrapper from "@/components/Dashboard/DashboardWrapper";
 
 export default function Estatisticas() {
   useEffect(() => {
@@ -23,8 +25,8 @@ export default function Estatisticas() {
     <div className="flex">
       <Sidebar active="/dashboard/estatisticas" />
       <div className="w-full flex flex-col">
-        <section className="max-md:px-4 max-md:py-6 px-12 py-10 flex flex-col w-full">
-          <h1 className="text-3xl font-bold mb-6">Estatísticas do Site</h1>
+        <DashboardWrapper>
+          <DashboardTitle title="Estatísticas do Site" />
           <div className="grid gap-6 lg:grid-cols-2">
             <TotalVisitantes />
 
@@ -32,9 +34,9 @@ export default function Estatisticas() {
 
             <Retencao />
           </div>
-        </section>
-        <section className="max-md:px-4 max-md:py-6 px-12 py-10 flex flex-col w-full">
-          <h1 className="text-3xl font-bold mb-6">Estatísticas do Fórum</h1>
+        </DashboardWrapper>
+        <DashboardWrapper>
+          <DashboardTitle title="Estatísticas do Fórum" />
           <div className="grid gap-6 lg:grid-cols-2">
             <AtividadeForum />
 
@@ -58,7 +60,7 @@ export default function Estatisticas() {
               </CardFooter>
             </Card>
           </div>
-        </section>
+        </DashboardWrapper>
       </div>
     </div>
   );

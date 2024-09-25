@@ -3,15 +3,15 @@ import DashboardWrapper from "@/components/Dashboard/DashboardWrapper";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import { useEffect } from "react";
 
-export default function Configuracoes() {
+export default function Atividade() {
   useEffect(() => {
-    document.title = "Configurações - DSM";
+    document.title = "Atividade - DSM";
   }, []);
   return (
     <div className="flex">
-      <Sidebar active="/dashboard/configuracoes" />
+      <Sidebar active="/dashboard/atividade" />
       <DashboardWrapper>
-        <DashboardTitle title="Configurações" />
+        <DashboardTitle title="Atividade" />
       </DashboardWrapper>
     </div>
   );

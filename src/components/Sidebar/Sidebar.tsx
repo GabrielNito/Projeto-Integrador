@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -33,6 +33,11 @@ export default function Sidebar({ active }: SidebarProps) {
   const username = "dsm_professor";
   const avatar =
     "https://i.pinimg.com/736x/b1/5a/34/b15a34ae7890d75945ba1df15ca9da5f.jpg";
+
+  useEffect(() => {
+    const test_mobile: boolean = window.innerWidth < 768;
+    setExpanded(!test_mobile);
+  }, []);
 
   return (
     <nav
@@ -214,7 +219,7 @@ const sidebar_items: SidebarItems = {
       title: "Gerenciamento de Usuários",
       icon: <UserCheck2 className="h-4 w-4 ml-[2px]" />,
       alert: false,
-      href: "/dashboard/gereciamento-de-usuarios",
+      href: "/dashboard/gerenciamento-de-usuarios",
     },
     {
       title: "Mensagens aprovadas",

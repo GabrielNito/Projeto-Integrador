@@ -1,5 +1,5 @@
+import Thread from "@/components/Forum/Thread";
 import Navbar from "@/components/Navbar/Navbar";
-import Thread from "@/components/Thread/Thread";
 import { useEffect } from "react";
 
 export default function Forum() {
