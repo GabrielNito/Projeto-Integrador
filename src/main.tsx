@@ -12,6 +12,7 @@ import Atividade from "./Pages/Dashboard/Atividade";
 import GerenciamentoDeUsuarios from "./Pages/Dashboard/Admin/GerenciamentoDeUsuarios";
 import MensagensAprovadas from "./Pages/Dashboard/Admin/MensagensAprovadas";
 import ConteudoReportado from "./Pages/Dashboard/Admin/ConteudoReportado";
+import General from "./components/Dashboard/General";
 
 const router = createBrowserRouter([
   {
@@ -24,35 +25,41 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Geral />,
-  },
-  {
-    path: "/dashboard/atividade",
-    element: <Atividade />,
-  },
-  {
-    path: "/dashboard/conta",
-    element: <Conta />,
-  },
-  {
-    path: "/dashboard/configuracoes",
-    element: <Configuracoes />,
-  },
-  {
-    path: "/dashboard/estatisticas",
-    element: <Estatisticas />,
-  },
-  {
-    path: "/dashboard/gerenciamento-de-usuarios",
-    element: <GerenciamentoDeUsuarios />,
-  },
-  {
-    path: "/dashboard/mensagens-aprovadas",
-    element: <MensagensAprovadas />,
-  },
-  {
-    path: "/dashboard/conteudo-reportado",
-    element: <ConteudoReportado />,
+    element: <General />,
+    children: [
+      {
+        path: "/dashboard/geral",
+        element: <Geral />,
+      },
+      {
+        path: "/dashboard/atividade",
+        element: <Atividade />,
+      },
+      {
+        path: "/dashboard/conta",
+        element: <Conta />,
+      },
+      {
+        path: "/dashboard/configuracoes",
+        element: <Configuracoes />,
+      },
+      {
+        path: "/dashboard/estatisticas",
+        element: <Estatisticas />,
+      },
+      {
+        path: "/dashboard/gerenciamento-de-usuarios",
+        element: <GerenciamentoDeUsuarios />,
+      },
+      {
+        path: "/dashboard/mensagens-aprovadas",
+        element: <MensagensAprovadas />,
+      },
+      {
+        path: "/dashboard/conteudo-reportado",
+        element: <ConteudoReportado />,
+      },
+    ],
   },
 ]);
 

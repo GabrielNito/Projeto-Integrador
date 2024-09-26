@@ -12,8 +12,6 @@ import {
 import { ChevronDown } from "lucide-react";
 
 import DashboardTitle from "@/components/Dashboard/DashboardTitle";
-import DashboardWrapper from "@/components/Dashboard/DashboardWrapper";
-import Sidebar from "@/components/Sidebar/Sidebar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -203,69 +201,66 @@ export default function GerenciamentoDeUsuarios() {
   });
 
   return (
-    <div className="flex">
-      <Sidebar active="/dashboard/gerenciamento-de-usuarios" />
-      <DashboardWrapper>
-        <AvisoMobile />
-        <DashboardTitle title="Gerenciamento de Usuários" />
-        <div className="w-full">
-          <div className="flex items-center py-4">
-            <Input
-              placeholder="Filtrar nicknames..."
-              value={
-                (table.getColumn("nickname")?.getFilterValue() as string) ?? ""
-              }
-              onChange={(event) =>
-                table.getColumn("nickname")?.setFilterValue(event.target.value)
-              }
-              className="max-w-sm"
-            />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  Colunas <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) =>
-                          column.toggleVisibility(!!value)
-                        }
-                      >
-                        {column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <div className="rounded-md border">
-            <DashboardTable
-              columnFilters={columnFilters}
-              setColumnFilters={setColumnFilters}
-              pageIndex={pageIndex}
-              users={users}
-            />
-          </div>
-
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <DashboardPagination
-              users={users}
-              pageIndex={pageIndex}
-              setPageIndex={setPageIndex}
-            />
-          </div>
+    <>
+      <AvisoMobile />
+      <DashboardTitle title="Gerenciamento de Usuários" />
+      <div className="w-full">
+        <div className="flex items-center py-4">
+          <Input
+            placeholder="Filtrar nicknames..."
+            value={
+              (table.getColumn("nickname")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn("nickname")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                Colunas <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-      </DashboardWrapper>
-    </div>
+
+        <div className="rounded-md border">
+          <DashboardTable
+            columnFilters={columnFilters}
+            setColumnFilters={setColumnFilters}
+            pageIndex={pageIndex}
+            users={users}
+          />
+        </div>
+
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <DashboardPagination
+            users={users}
+            pageIndex={pageIndex}
+            setPageIndex={setPageIndex}
+          />
+        </div>
+      </div>
+    </>
   );
 }
