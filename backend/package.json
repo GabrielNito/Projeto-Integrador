@@ -2,8 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "prisma": {
+    "schema": "./src/prisma/schema.prisma"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dbreset": "npx prisma db reset",
+    "dbup": "npx prisma db push",
+    "seed": "npx ts-node ./src/prisma/Seed.ts",
+    "dev": "npx nodemon --exec ts-node ./Server.ts"
   },
   "keywords": [],
   "author": "",
