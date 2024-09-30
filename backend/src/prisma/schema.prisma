@@ -1,0 +1,80 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Users {
+  id                    Int       @id @default(autoincrement())
+  username              String
+  password              String
+  email                 String    @unique
+  role                  String
+  createAt              DateTime  @default(now())
+  updateAt              DateTime  @updatedAt
+  likedPosts            String
+  likedThreads          String
+  avatar                String?
+  badges                String
+
+  createdPosts          Posts[]
+  createdThreads        Threads[]
+  visits                Visits[]
+  allowedNotifications  UserNotifications[]
+}
+
+model Posts { 
+  id          Int       @id @default(autoincrement())
+  content     String
+  likes       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int       
+  threadId    Int       
+
+  user        Users     @relation(fields: [userId], references: [id])
+  thread      Threads   @relation(fields: [threadId], references: [id])
+}
+
+model Threads {
+  id          Int       @id @default(autoincrement())
+  title       String
+  likes       Int       @default(0)
+  isClosed    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int       
+
+  user        Users     @relation(fields: [userId], references: [id])
+  posts       Posts[]
+}
+
+model Visits {
+  id          Int       @id @default(autoincrement())
+  exitedAt    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  userId      Int?      
+
+  user        Users?    @relation(fields: [userId], references: [id])
+}
+
+model Notifications {
+  id     Int      @id @default(autoincrement())
+  title  String   
+
+  users  UserNotifications[]
+}
+
+model UserNotifications {
+  userId        Int
+  notificationId Int
+
+  user          Users          @relation(fields: [userId], references: [id])
+  notification  Notifications  @relation(fields: [notificationId], references: [id])
+
+  @@id([userId, notificationId])
+}

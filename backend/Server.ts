@@ -7,4 +7,4 @@ const PORT = process.env.SERVER_PORT;
 
 const app = express();
 
-app.listen(PORT, () => `Server listening on http://localhost:${PORT}`);
+app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
