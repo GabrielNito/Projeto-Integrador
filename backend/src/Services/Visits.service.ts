@@ -6,4 +6,8 @@ export class VisitsService {
   async getAllVisits() {
     return await this._visitRepository.findMany();
   }
+
+  async getVisitById(id: number) {
+    return await this._visitRepository.findById(id);
+  }
 }

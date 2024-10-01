@@ -6,4 +6,6 @@ const visits = new VisitsController();
 
 router.get('/', visits.getAllVisits);
 
+router.get('/:id', visits.getVisitById);
+
 export default router;
