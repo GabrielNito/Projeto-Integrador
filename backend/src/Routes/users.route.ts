@@ -7,4 +7,6 @@ const Users = new UsersController();
 
 router.get('/', Users.getAllPosts);
 
+router.get('/:id', Users.getUserById);
+
 export default router;

@@ -6,4 +6,8 @@ export class UsersService {
   async getAllUsers() {
     return await this._userRepository.findMany();
   }
+
+  async getUserById(id: number) {
+    return await this._userRepository.findById(id);
+  }
 }

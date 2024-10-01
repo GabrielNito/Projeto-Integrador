@@ -8,9 +8,19 @@ export class UsersController {
     this._usersService = new UsersService();
   }
 
-  getAllPosts = async (req: Request, res: Response, next: NextFunction) => {
+  getAllPosts = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await this._usersService.getAllUsers();
+      res.status(200).json({ message: 'Success', data });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getUserById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
+      const data = await this._usersService.getUserById(id);
       res.status(200).json({ message: 'Success', data });
     } catch (error) {
       next(error);
