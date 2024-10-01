@@ -6,4 +6,8 @@ export class PostsService {
   async findAllPosts() {
     return await this._postsRepository.findMany();
   }
+
+  async findPostById(id: number) {
+    return await this._postsRepository.findById(id);
+  }
 }
