@@ -6,4 +6,12 @@ export class NotificationsRepository {
       include: { users: { select: { userId: true } } },
     });
   }
+
+  async findManyById(id: number) {
+    return await Notifications.findUnique({ 
+      where: {id},
+      include: { users: { select: { userId: true } } }
+      
+    })
+  }
 }

@@ -10,9 +10,26 @@ export class NotificationsController {
 
   getAllNotifications = async (_req: Request, res: Response, next: NextFunction) => {
     const data = await this._notificationService.getAllNotifications();
-    res.status(200).json({
-      message: 'Success',
-      data,
-    });
+    try {
+      res.status(200).json({
+        message: 'Success',
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
   };
+
+  getNotificationById = async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id)
+    try {
+      const data = await this._notificationService.getNotificationById(id);
+      res.status(200).json({
+        message: 'Sucess',
+        data,
+      })
+    } catch (error) {
+      next(error);
+    }
+  }
 }
