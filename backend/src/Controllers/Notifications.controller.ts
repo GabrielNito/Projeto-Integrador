@@ -8,9 +8,23 @@ export class NotificationsController {
     this._notificationService = new NotificationsService();
   }
 
-  getAllNotifications = async (_req: Request, res: Response, next: NextFunction) => {
-    const data = await this._notificationService.getAllNotifications();
+  createNotification = async (req: Request, res: Response, next: NextFunction) => {
+    const { title } = req.body;
     try {
+      const data = await this._notificationService.createNotification({ title });
+      res.status(201).json({
+        message: 'Created Successfully',
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
+  getAllNotifications = async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await this._notificationService.getAllNotifications();
       res.status(200).json({
         message: 'Success',
         data,

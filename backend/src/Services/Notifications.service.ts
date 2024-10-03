@@ -3,6 +3,10 @@ import { NotificationsRepository } from '../Repositories/Notifications.repositor
 export class NotificationsService {
   private _notificationRepository = new NotificationsRepository();
 
+  async createNotification(title: { title:string }) {
+    return await this._notificationRepository.create(title);
+  }
+
   async getAllNotifications() {
     return await this._notificationRepository.findMany();
   }
