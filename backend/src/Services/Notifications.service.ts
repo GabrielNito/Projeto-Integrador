@@ -14,4 +14,8 @@ export class NotificationsService {
   async getNotificationById(id: number){
     return await this._notificationRepository.findManyById(id);
   }
+
+  async deleteNotification(id: number){
+    return await this._notificationRepository.delete(id);
+  }
 }

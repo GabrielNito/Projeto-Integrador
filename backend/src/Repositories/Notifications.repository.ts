@@ -24,4 +24,10 @@ export class NotificationsRepository {
     })
   }
 
+  async delete(id: number) {
+    return await Notifications.delete({
+      where: { id },
+    })
+  }
+
 }
