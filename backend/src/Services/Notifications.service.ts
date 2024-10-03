@@ -18,4 +18,8 @@ export class NotificationsService {
   async deleteNotification(id: number){
     return await this._notificationRepository.delete(id);
   }
+
+  async updateNotification(id: number, title: string){
+    return await this._notificationRepository.update(id, title);
+  }
 }

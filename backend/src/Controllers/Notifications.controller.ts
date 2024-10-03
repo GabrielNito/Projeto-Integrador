@@ -47,6 +47,20 @@ export class NotificationsController {
     }
   }
 
+  updateNotification = async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id);
+    const { title } = req.body;
+    try {
+      const data = await this._notificationService.updateNotification(id, title);
+      res.status(200).json({
+        message: 'Updated successfully',
+        data,
+      })
+    } catch (error) {
+      next(error);
+    }
+  }
+
   deleteNotification = async (req: Request, res: Response, next: NextFunction) => {
     const id = Number(req.params.id)
     try {
@@ -54,7 +68,7 @@ export class NotificationsController {
       res.status(200).json({
         message: 'Notification deleted successfully'
       })
-    }catch(error){
+    } catch (error) {
       next(error);
     }
   }

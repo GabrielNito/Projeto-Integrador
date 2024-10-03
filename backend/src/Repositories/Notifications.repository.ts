@@ -24,6 +24,13 @@ export class NotificationsRepository {
     })
   }
 
+  async update(id: number, title: string) {
+    return await Notifications.update({
+      where: { id },
+      data: { title },
+    })
+  }
+
   async delete(id: number) {
     return await Notifications.delete({
       where: { id },
