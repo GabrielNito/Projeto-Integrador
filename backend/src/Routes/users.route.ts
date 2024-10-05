@@ -5,8 +5,10 @@ const router = Router();
 
 const Users = new UsersController();
 
-router.get('/', Users.getAllPosts);
+router.get('/', Users.getAllUsers);
 
 router.get('/:id', Users.getUserById);
+
+router.post('/', Users.createUser);
 
 export default router;
