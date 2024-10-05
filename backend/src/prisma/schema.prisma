@@ -15,8 +15,8 @@ model Users {
   role                  String
   createAt              DateTime  @default(now())
   updateAt              DateTime  @updatedAt
-  likedPosts            String?
-  likedThreads          String?
+  likedPosts            String
+  likedThreads          String
   avatar                String?
   badges                String
 

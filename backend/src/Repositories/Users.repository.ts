@@ -1,4 +1,4 @@
-import users from '../Entitites/users.entity';
+import users from '../Entities/users.entity';
 export class UserRepository {
 
   async create(data: {
@@ -6,8 +6,8 @@ export class UserRepository {
     password: string,
     email: string,
     role: string,
-    likedPosts?: string,
-    likedThreads?: string,
+    likedPosts: string,
+    likedThreads: string,
     avatar?: string,
     badges: string,
   }) {
@@ -17,8 +17,8 @@ export class UserRepository {
         password: data.password,
         email: data.email,
         role: data.role,
-        likedPosts: data.likedPosts ?? null, 
-        likedThreads: data.likedThreads ?? null, 
+        likedPosts: data.likedPosts, 
+        likedThreads: data.likedThreads, 
         avatar: data.avatar ?? null, 
         badges: data.badges,
       },

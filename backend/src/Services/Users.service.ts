@@ -8,24 +8,18 @@ export class UsersService {
     password: string,
     email: string,
     role: string,
-    likedPosts?: string[],
-    likedThreads?: string[],
     avatar?: string,
-    badges: string,
   }) {
-    let createData: any = {
+    const createData: any = {
       username: data.username,
       password: data.password,
       email: data.email,
       role: data.role,
-      badges: data.badges,
+      badges: JSON.stringify([]),
       likedPosts: JSON.stringify([]),
       likedThreads: JSON.stringify([]),
+      avatar: data.avatar ?? null
     };
-    if (data.avatar !== undefined) {
-      createData.avatar = data.avatar;
-    }
-
     return await this._userRepository.create(createData);
   }
 
