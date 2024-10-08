@@ -22,7 +22,7 @@ export class ThreadsController {
   getThreadById = async (req: Request, res: Response, next: NextFunction) => {
     const id = Number(req.params.id);
     try {
-      const data = await this._threadsService.getThreadsById(id);
+      const data = await this._threadsService.getThreadById(id);
       res.status(200).json({
         message: 'Success',
         data,
