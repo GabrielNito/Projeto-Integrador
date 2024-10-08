@@ -6,9 +6,10 @@
     "schema": "./src/prisma/schema.prisma"
   },
   "scripts": {
-    "dbreset": "npx prisma db reset",
+    "dbmigrate": "npx prisma migrate dev",
     "dbup": "npx prisma db push",
-    "seed": "npx ts-node ./src/prisma/Seed.ts",
+    "dbseed": "npx ts-node ./src/prisma/Seed.ts",
+    "dbupdate": "npx prisma migrate dev && npx ts-node ./src/prisma/Seed.ts",
     "dev": "npx nodemon --exec ts-node ./Server.ts"
   },
   "keywords": [],
