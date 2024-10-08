@@ -16,6 +16,9 @@ export default function Home() {
             <a href="/forum">Forum</a>
           </Button>
           <Button variant="link">
+            <a href="/login">Login</a>
+          </Button>
+          <Button variant="link">
             <a href="/dashboard/geral">Dashboard</a>
           </Button>
         </div>

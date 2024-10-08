@@ -3,13 +3,14 @@ import { ModeToggle } from "../ModeToggle";
 import { NavMenu } from "./NavMenu";
 import { Separator } from "../ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { Menu } from "lucide-react";
+import { Badge, LucideIcon, Menu, MessagesSquare } from "lucide-react";
 import NavbarNotifications from "./NavbarNotifications";
 
 interface Notification {
   title: string;
   description: string;
   action?: string;
+  icon: LucideIcon;
 }
 
 const test = [
@@ -17,21 +18,25 @@ const test = [
     title: "Inscrições Abertas para o Vestibular da FATEC",
     description:
       "Não perca a chance de se inscrever para o vestibular da FATEC! As inscrições vão até o final deste mês.",
+    icon: Badge,
   },
   {
     title: "Novo Comentário no Fórum",
     description:
       "Alguém comentou sobre um tema relevante no fórum que você participa. Clique para ver mais detalhes.",
     action: "/forum",
+    icon: MessagesSquare,
   },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [userLogged, setUserLogged] = useState(false);
 
   useEffect(() => {
     setNotifications(test);
+    setUserLogged(true);
   }, []);
 
   return (
@@ -53,12 +58,16 @@ export default function Navbar() {
           </SheetTrigger>
 
           <SheetContent className="ml-12 py-12 bg-[hsl(var(--background))]">
-            <NavMenu variant="mobile" notifications={notifications} />
+            <NavMenu
+              logged={userLogged}
+              variant="mobile"
+              notifications={notifications}
+            />
           </SheetContent>
         </Sheet>
 
-        <div className="max-md:hidden flex gap-4">
-          <NavMenu notifications={notifications} />
+        <div className="max-md:hidden flex gap-2">
+          <NavMenu logged={userLogged} notifications={notifications} />
           <NavbarNotifications notifications={notifications} />
           <ModeToggle />
         </div>

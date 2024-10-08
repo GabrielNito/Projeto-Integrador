@@ -13,6 +13,9 @@ import GerenciamentoDeUsuarios from "./Pages/Dashboard/Admin/GerenciamentoDeUsua
 import MensagensAprovadas from "./Pages/Dashboard/Admin/MensagensAprovadas";
 import ConteudoReportado from "./Pages/Dashboard/Admin/ConteudoReportado";
 import General from "./components/Dashboard/General";
+import Login from "./Pages/Login/Login";
+import SignIn from "./Pages/Login/SignIn";
+import RecuperacaoSenha from "./Pages/Login/RecuperacaoSenha";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +25,18 @@ const router = createBrowserRouter([
   {
     path: "/forum",
     element: <Forum />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/cadastro",
+    element: <SignIn />,
+  },
+  {
+    path: "/recuperacao-senha",
+    element: <RecuperacaoSenha />,
   },
   {
     path: "/dashboard",

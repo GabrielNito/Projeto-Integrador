@@ -1,4 +1,4 @@
-import { Bell } from "lucide-react";
+import { Bell, LucideIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -14,6 +14,7 @@ interface Notification {
   title: string;
   description: string;
   action?: string;
+  icon: LucideIcon;
 }
 
 interface NavbarNotificationsProps {
@@ -29,7 +30,7 @@ export default function NavbarNotifications({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-4 w-4" />
+          <Bell className="lg:h-4 lg:w-4" />
           <span
             className={cn(
               "bg-red-500 w-[7px] h-[7px] rounded-full absolute top-2 right-[10px]",
@@ -59,8 +60,11 @@ export default function NavbarNotifications({
             >
               <div className="flex flex-row justify-center items-center gap-2">
                 <div className="flex flex-col gap-2">
-                  <h1 className="font-semibold">{notification.title}</h1>
-                  <h1 className="w-[40ch] opacity-75">
+                  <div className="flex items-center gap-2">
+                    <notification.icon className="w-6 h-6" />
+                    <h1 className="font-semibold">{notification.title}</h1>
+                  </div>
+                  <h1 className="w-[40ch] opacity-75 pl-8">
                     {notification.description}
                   </h1>
                 </div>
