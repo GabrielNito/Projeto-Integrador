@@ -15,7 +15,6 @@ async function seed() {
           role: 'ADMIN',
           likedPosts: '[]', // Default value: empty array
           likedThreads: '[]', // Default value: empty array
-          badges: '[]', // Default value: empty array
         },
       });
     })
@@ -32,7 +31,6 @@ async function seed() {
           role: 'STUDENT',
           likedPosts: '[]', // Default value: empty array
           likedThreads: '[]', // Default value: empty array
-          badges: '[]', // Default value: empty array
         },
       });
     })

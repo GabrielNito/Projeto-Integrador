@@ -18,8 +18,8 @@ model Users {
   likedPosts            String
   likedThreads          String
   avatar                String?
-  badges                String
 
+  badges                UserBadges[]
   createdPosts          Posts[]
   createdThreads        Threads[]
   visits                Visits[]
@@ -35,7 +35,7 @@ model Posts {
   userId      Int       
   threadId    Int       
 
-  user        Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user        Users     @relation(fields: [userId], references: [id])
   thread      Threads   @relation(fields: [threadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
@@ -48,7 +48,7 @@ model Threads {
   updatedAt   DateTime  @updatedAt
   userId      Int       
 
-  user        Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user        Users     @relation(fields: [userId], references: [id])
   posts       Posts[]
 }
 
@@ -59,7 +59,7 @@ model Visits {
   updatedAt   DateTime  @default(now())
   userId      Int?      
 
-  user        Users?    @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  user        Users?    @relation(fields: [userId], references: [id])
 }
 
 model Notifications {
@@ -77,4 +77,23 @@ model UserNotifications {
   notification  Notifications  @relation(fields: [notificationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([userId, notificationId])
+}
+
+model Badges {
+  id  Int @id @default(autoincrement())
+  title String
+  iconPath String
+
+  user UserBadges[]
+}
+
+model UserBadges {
+  userId  Int
+  badgeId Int
+
+  user Users? @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  badges Badges @relation(fields: [badgeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userId, badgeId])
+
 }
