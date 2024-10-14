@@ -6,7 +6,7 @@ export class ThreadsService {
     return await this._threadsRepository.findMany();
   }
 
-  async getThreadsById(id: number) {
+  async getThreadById(id: number) {
     return await this._threadsRepository.findById(id);
   }
 }
