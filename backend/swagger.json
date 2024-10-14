@@ -1,0 +1,8 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API do projeto integrador fórum",
+    "description": "Essa API satifaz todas as necessidades do aplicativo do projeto integrador",
+    "version": "1.0.0"
+  }
+}
