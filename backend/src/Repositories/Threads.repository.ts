@@ -1,4 +1,4 @@
-import Threads from '../Entitites/threads.entity';
+import Threads from '../Entities/threads.entity';
 
 export class ThreadsRepository {
   async findMany() {
