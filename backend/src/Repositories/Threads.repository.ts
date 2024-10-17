@@ -11,4 +11,13 @@ export class ThreadsRepository {
       include: { posts: true, user: true },
     });
   }
+
+  async create(title: string, userId: number) {
+    return await Threads.create({
+      data: {
+        title,
+        userId,
+      },
+    });
+  }
 }
