@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ThreadsService } from '../Services/Threads.service';
+import { CreateThreadsDTO } from '../Dtos/create/CreateThreads.dto';
 export class ThreadsController {
   private _threadsService: ThreadsService;
 
@@ -26,6 +27,19 @@ export class ThreadsController {
       res.status(200).json({
         message: 'Success',
         data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  createThread = async (req: Request, res: Response, next: NextFunction) => {
+    const body: CreateThreadsDTO = req.body;
+    try {
+      const data = await this._threadsService.createThread(body);
+      res.status(201).json({
+        data,
+        message: 'Thread created successfully',
       });
     } catch (error) {
       next(error);

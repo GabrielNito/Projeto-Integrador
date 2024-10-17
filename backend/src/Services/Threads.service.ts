@@ -1,3 +1,4 @@
+import { CreateThreadsDTO } from '../Dtos/create/CreateThreads.dto';
 import { ThreadsRepository } from '../Repositories/Threads.repository';
 
 export class ThreadsService {
@@ -8,5 +9,11 @@ export class ThreadsService {
 
   async getThreadById(id: number) {
     return await this._threadsRepository.findById(id);
+  }
+
+  async createThread(body: CreateThreadsDTO) {
+    const { title, userId } = body;
+
+    return await this._threadsRepository.create(title, userId);
   }
 }
