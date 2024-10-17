@@ -1,4 +1,4 @@
-import Posts from '../Entitites/posts.entity';
+import Posts from '../Entities/posts.entity';
 
 export class PostsRepository {
   async findMany() {

@@ -1,4 +1,4 @@
-import Visits from '../Entitites/visits.entity';
+import Visits from '../Entities/visits.entity';
 
 export class VisitsRepository {
   async findMany() {

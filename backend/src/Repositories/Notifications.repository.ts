@@ -1,7 +1,6 @@
-import Notifications from '../Entitites/notifications.entity';
+import Notifications from '../Entities/notifications.entity';
 
 export class NotificationsRepository {
-
   async create(data: { title: string }) {
     return await Notifications.create({
       data: {
@@ -19,22 +18,20 @@ export class NotificationsRepository {
   async findManyById(id: number) {
     return await Notifications.findUnique({
       where: { id },
-      include: { users: { select: { userId: true } } }
-
-    })
+      include: { users: { select: { userId: true } } },
+    });
   }
 
   async update(id: number, title: string) {
     return await Notifications.update({
       where: { id },
       data: { title },
-    })
+    });
   }
 
   async delete(id: number) {
     return await Notifications.delete({
       where: { id },
-    })
+    });
   }
-
 }
