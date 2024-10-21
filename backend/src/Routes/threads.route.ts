@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ThreadsController } from '../Controllers/Threads.controller';
-import { dtoValidate } from '../Middlewares/dtoValidate.middleware';
+import { dtoValidate } from '../middlewares/dtoValidate.middleware';
 import { CreateThreadsDTO } from '../Dtos/create/CreateThreads.dto';
 
 const router = Router();

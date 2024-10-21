@@ -1,3 +1,4 @@
+import { CreateUsersDTO } from '../Dtos/create/CreateUsers.dto';
 import { UsersService } from '../Services/Users.service';
 import { Request, Response, NextFunction } from 'express';
 
@@ -10,13 +11,12 @@ export class UsersController {
 
   createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userData = req.body;
-      const newUser = await this._usersService.createUser(userData)
-      res.status(201).json({ message: 'User created sucessfully', data: newUser })
+      const createdUser = await this._usersService.createUser(req.body);
+      res.status(201).json({ message: 'User created sucessfully', data: createdUser });
     } catch (error) {
-      next(error)
+      next(error);
     }
-  }
+  };
 
   getAllUsers = async (_req: Request, res: Response, next: NextFunction) => {
     try {
