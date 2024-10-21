@@ -1,12 +1,6 @@
 import { CreateUsersDTO } from '../Dtos/create/CreateUsers.dto';
 import users from '../Entities/users.entity';
 export class UserRepository {
-  async create(data: CreateUsersDTO) {
-    return await users.create({
-      data,
-    });
-  }
-
   async findMany() {
     return await users.findMany({
       include: {
@@ -27,6 +21,24 @@ export class UserRepository {
         createdThreads: true,
         visits: true,
       },
+    });
+  }
+
+  async findByEmail(email: string) {
+    return await users.findUnique({
+      where: { email },
+      include: {
+        allowedNotifications: true,
+        createdPosts: true,
+        createdThreads: true,
+        visits: true,
+      },
+    });
+  }
+
+  async create(data: CreateUsersDTO) {
+    return await users.create({
+      data,
     });
   }
 }
