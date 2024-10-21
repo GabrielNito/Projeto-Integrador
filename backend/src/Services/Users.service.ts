@@ -1,26 +1,21 @@
+import { CreateUsersDTO } from '../Dtos/create/CreateUsers.dto';
 import { UserRepository } from '../Repositories/Users.repository';
 
 export class UsersService {
   private _userRepository = new UserRepository();
 
-  async createUser(data: {
-    username: string,
-    password: string,
-    email: string,
-    role: string,
-    avatar?: string,
-  }) {
-    const createData: any = {
-      username: data.username,
-      password: data.password,
-      email: data.email,
-      role: data.role,
-      badges: JSON.stringify([]),
-      likedPosts: JSON.stringify([]),
-      likedThreads: JSON.stringify([]),
-      avatar: data.avatar ?? null
+  async createUser(data: CreateUsersDTO) {
+    const { likedPosts, likedThreads, badges } = data;
+
+    const newData: CreateUsersDTO = {
+      ...data,
+      likedPosts: JSON.stringify(likedPosts) || '',
+      likedThreads: JSON.stringify(likedThreads) || '',
+      badges: JSON.stringify(badges) || '',
     };
-    return await this._userRepository.create(createData);
+
+    const { password, ...created } = await this._userRepository.create(newData);
+    return created;
   }
 
   async getAllUsers() {
