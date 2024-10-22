@@ -1,4 +1,4 @@
-import { CreateThreadsDTO } from '../Dtos/create/CreateThreads.dto';
+import { CreateThreadsDTO } from '../Dtos/create/CreateThreadsDTO.dto';
 import { ThreadsRepository } from '../Repositories/Threads.repository';
 
 export class ThreadsService {
