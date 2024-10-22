@@ -38,6 +38,7 @@ export class UsersController {
   };
 
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
+    req.body = { ...req.body, id: req.user?.id };
     try {
       const updatedUser = await this._usersService.updateUser(req.body);
       res.status(201).json({ message: 'User updated successfully', data: updatedUser });
