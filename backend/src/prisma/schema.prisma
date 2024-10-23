@@ -15,10 +15,10 @@ model Users {
   role                  String
   createAt              DateTime  @default(now())
   updateAt              DateTime  @updatedAt
-  likedPosts            String
-  likedThreads          String
+  likedPosts            String?
+  likedThreads          String?
   avatar                String?
-  badges                String
+  badges                String?
 
   createdPosts          Posts[]
   createdThreads        Threads[]
@@ -35,8 +35,8 @@ model Posts {
   userId      Int       
   threadId    Int       
 
-  user        Users     @relation(fields: [userId], references: [id])
-  thread      Threads   @relation(fields: [threadId], references: [id])
+  user        Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  thread      Threads   @relation(fields: [threadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Threads {
@@ -48,7 +48,7 @@ model Threads {
   updatedAt   DateTime  @updatedAt
   userId      Int       
 
-  user        Users     @relation(fields: [userId], references: [id])
+  user        Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   posts       Posts[]
 }
 
@@ -59,7 +59,7 @@ model Visits {
   updatedAt   DateTime  @default(now())
   userId      Int?      
 
-  user        Users?    @relation(fields: [userId], references: [id])
+  user        Users?    @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: Cascade)
 }
 
 model Notifications {
@@ -73,8 +73,8 @@ model UserNotifications {
   userId        Int
   notificationId Int
 
-  user          Users          @relation(fields: [userId], references: [id])
-  notification  Notifications  @relation(fields: [notificationId], references: [id])
+  user          Users          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  notification  Notifications  @relation(fields: [notificationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([userId, notificationId])
 }
