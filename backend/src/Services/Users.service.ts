@@ -4,6 +4,8 @@ import { UserRepository } from '../Repositories/Users.repository';
 import { encryptPassword } from '../utils/encryptPassword.utils';
 
 export class UsersService {
+  private _userRepository = new UserRepository();
+
   async getAllUsers() {
     return await this._userRepository.findMany();
   }
@@ -15,8 +17,6 @@ export class UsersService {
   async getUserByEmail(email: string) {
     return await this._userRepository.findByEmail(email);
   }
-
-  private _userRepository = new UserRepository();
 
   async createUser(data: CreateUsersDTO) {
     const { likedPosts, likedThreads, badges } = data;

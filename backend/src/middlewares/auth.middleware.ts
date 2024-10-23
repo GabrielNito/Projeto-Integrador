@@ -19,10 +19,9 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const data = await jose.jwtVerify(token, secret);
+    const data = await jose.jwtVerify(token as string, secret);
     if (!data) {
       throw Error('Token not found');
-
       // return res.status(401).json({ message: 'invalid token' });
     }
 
@@ -30,7 +29,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     throw Error('Token not found');
-
     // return res.status(401).json({ message: 'invalid token' });
   }
 };
