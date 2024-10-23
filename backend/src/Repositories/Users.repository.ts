@@ -1,4 +1,5 @@
-import { CreateUsersDTO } from '../Dtos/create/CreateUsers.dto';
+import { CreateUsersDTO } from '../Dtos/create/CreateUsersDTO.dto';
+import { UpdateUserDTO } from '../Dtos/update/UpdateUserDTO.dto';
 import users from '../Entities/users.entity';
 export class UserRepository {
   async findMany() {
@@ -38,6 +39,14 @@ export class UserRepository {
 
   async create(data: CreateUsersDTO) {
     return await users.create({
+      data,
+    });
+  }
+
+  async update(data: UpdateUserDTO) {
+    const { id } = data;
+    return await users.update({
+      where: { id },
       data,
     });
   }

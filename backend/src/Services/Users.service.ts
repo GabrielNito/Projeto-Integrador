@@ -1,4 +1,5 @@
-import { CreateUsersDTO } from '../Dtos/create/CreateUsers.dto';
+import { CreateUsersDTO } from '../Dtos/create/CreateUsersDTO.dto';
+import { UpdateUserDTO } from '../Dtos/update/UpdateUserDTO.dto';
 import { UserRepository } from '../Repositories/Users.repository';
 import { encryptPassword } from '../utils/encryptPassword.utils';
 
@@ -19,15 +20,16 @@ export class UsersService {
 
   async createUser(data: CreateUsersDTO) {
     const { likedPosts, likedThreads, badges } = data;
-    const encryptedPassword = await encryptPassword(data.password);
     const user = await this.getUserByEmail(data.email);
+
+    data.password = await encryptPassword(data.password);
+
     if (user) {
       throw Error('Email já cadastrado');
     }
 
     const newData: CreateUsersDTO = {
       ...data,
-      password: encryptedPassword,
       likedPosts: JSON.stringify(likedPosts) || '',
       likedThreads: JSON.stringify(likedThreads) || '',
       badges: JSON.stringify(badges) || '',
@@ -37,5 +39,14 @@ export class UsersService {
       newData
     );
     return created;
+  }
+
+  async updateUser(data: UpdateUserDTO) {
+    if (data.password) {
+      data.password = await encryptPassword(data.password);
+    }
+
+    const { password: undefined, ...updated } = await this._userRepository.update(data);
+    return updated;
   }
 }

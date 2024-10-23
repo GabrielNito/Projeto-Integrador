@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ThreadsService } from '../Services/Threads.service';
-import { CreateThreadsDTO } from '../Dtos/create/CreateThreads.dto';
+import { CreateThreadsDTO } from '../Dtos/create/CreateThreadsDTO.dto';
 export class ThreadsController {
   private _threadsService: ThreadsService;
 
