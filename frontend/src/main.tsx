@@ -1,7 +1,7 @@
 import "./index.css";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./Pages/HomePage";
+import HomePage from "./Pages/HomePage/HomePage";
 import Forum from "./Pages/Forum/Forum";
 import Geral from "./Pages/Dashboard/Geral";
 import Estatisticas from "./Pages/Dashboard/Admin/Estatisticas";
