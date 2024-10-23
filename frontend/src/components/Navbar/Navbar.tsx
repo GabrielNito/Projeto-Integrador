@@ -5,6 +5,7 @@ import { Separator } from "../ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Badge, LucideIcon, Menu, MessagesSquare } from "lucide-react";
 import NavbarNotifications from "./NavbarNotifications";
+import { Link } from "react-router-dom";
 
 interface Notification {
   title: string;
@@ -42,13 +43,13 @@ export default function Navbar() {
   return (
     <>
       <nav className="flex justify-between items-center px-12 py-2 max-md:px-4 ">
-        <a href="/">
+        <Link to="/">
           <img
             src="/logo.svg"
             alt="DSM Logo"
             className="max-md:h-[50px] md:w-[70px] p-1 max-md:p-0"
           />
-        </a>
+        </Link>
 
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="w-full">
