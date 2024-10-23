@@ -3,6 +3,7 @@ import { UsersController } from '../Controllers/Users.controller';
 import { dtoValidate } from '../middlewares/dtoValidate.middleware';
 import { CreateUsersDTO } from '../Dtos/create/CreateUsersDTO.dto';
 import { UpdateUserDTO } from '../Dtos/update/UpdateUserDTO.dto';
+import { auth } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -14,6 +15,6 @@ router.get('/:id', Users.getUserById);
 
 router.post('/', dtoValidate(CreateUsersDTO), Users.createUser);
 
-router.patch('/:id', dtoValidate(UpdateUserDTO), Users.updateUser);
+router.patch('/:id', dtoValidate(UpdateUserDTO), auth, Users.updateUser);
 
 export default router;

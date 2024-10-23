@@ -1,7 +1,12 @@
-import { CreateUsersDTO } from '../Dtos/create/CreateUsersDTO.dto';
+import { JWTPayload } from 'jose';
 import { UsersService } from '../Services/Users.service';
 import { Request, Response, NextFunction } from 'express';
 
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: JWTPayload;
+  }
+}
 export class UsersController {
   private _usersService: UsersService;
 
