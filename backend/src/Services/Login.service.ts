@@ -19,8 +19,9 @@ export class LoginService {
     }
 
     const payload = { id: user.id, email: user.email };
-    const secret = new TextEncoder().encode(process.env.JWT);
-    const alg = 'HS1024';
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+    const alg = 'HS256';
 
     const token = await new jose.SignJWT(payload)
       .setProtectedHeader({ alg })
