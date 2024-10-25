@@ -11,7 +11,7 @@ declare module 'express-serve-static-core' {
 }
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization;
   if (!token) {
     throw Error('Token not found');
     // return res.status(401).json({ message: 'token not found' });
@@ -19,7 +19,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const data = await jose.jwtVerify(token as string, secret);
+    const data = await jose.jwtVerify(token, secret);
     if (!data) {
       throw Error('Token not found');
       // return res.status(401).json({ message: 'invalid token' });
@@ -28,7 +28,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     req.user = data.payload;
     next();
   } catch (error) {
-    throw Error('Token not found');
+    throw error;
     // return res.status(401).json({ message: 'invalid token' });
   }
 };
