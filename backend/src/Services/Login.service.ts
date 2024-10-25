@@ -23,6 +23,7 @@ export class LoginService {
       email: user.email,
       role: user.role,
       username: user.username,
+      status: user.status,
     };
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 

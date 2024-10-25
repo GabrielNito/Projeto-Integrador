@@ -34,9 +34,8 @@ export class ThreadsController {
   };
 
   createThread = async (req: Request, res: Response, next: NextFunction) => {
-    const body: CreateThreadsDTO = req.body;
     try {
-      const data = await this._threadsService.createThread(body);
+      const data = await this._threadsService.createThread(req.body, req);
       res.status(201).json({
         data,
         message: 'Thread created successfully',

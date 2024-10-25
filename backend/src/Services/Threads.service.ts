@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { CreateThreadsDTO } from '../Dtos/create/CreateThreadsDTO.dto';
 import { ThreadsRepository } from '../Repositories/Threads.repository';
 
@@ -11,9 +12,19 @@ export class ThreadsService {
     return await this._threadsRepository.findById(id);
   }
 
-  async createThread(body: CreateThreadsDTO) {
-    const { title, userId } = body;
+  async createThread(body: CreateThreadsDTO, req: Request) {
+    const { title } = body;
 
-    return await this._threadsRepository.create(title, userId);
+    const user = req.user;
+
+    if (!user?.id) {
+      throw Error('Operation not allowed');
+    }
+
+    if (user?.status !== 'active') {
+      throw Error('User must be active');
+    }
+
+    return await this._threadsRepository.create(title, Number(user.id));
   }
 }
