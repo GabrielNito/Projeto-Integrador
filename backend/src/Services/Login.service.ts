@@ -18,7 +18,12 @@ export class LoginService {
       throw Error('Invalid passoword');
     }
 
-    const payload = { id: user.id, email: user.email };
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      username: user.username,
+    };
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
     const alg = 'HS256';
