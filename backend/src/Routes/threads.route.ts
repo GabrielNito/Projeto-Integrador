@@ -3,15 +3,18 @@ import { ThreadsController } from '../Controllers/Threads.controller';
 import { dtoValidate } from '../middlewares/dtoValidate.middleware';
 import { CreateThreadsDTO } from '../Dtos/create/CreateThreadsDTO.dto';
 import { auth } from '../middlewares/auth.middleware';
+import { UpdateThreadDTO } from '../Dtos/update/UpdateThreadDTO.dto';
 
 const router = Router();
 
-const threads = new ThreadsController();
+const Threads = new ThreadsController();
 
-router.get('/', threads.getAllThreads);
+router.get('/', Threads.getAllThreads);
 
-router.get('/:id', threads.getThreadById);
+router.get('/:id', Threads.getThreadById);
 
-router.post('/', dtoValidate(CreateThreadsDTO), auth, threads.createThread);
+router.post('/', dtoValidate(CreateThreadsDTO), auth, Threads.createThread);
+
+router.patch('/', dtoValidate(UpdateThreadDTO), auth, Threads.updateThread);
 
 export default router;

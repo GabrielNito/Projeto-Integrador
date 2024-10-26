@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateThreadDTO {
   @IsNumber()
@@ -8,4 +8,8 @@ export class UpdateThreadDTO {
   @IsString()
   @IsNotEmpty()
   title!: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  likes?: number;
 }

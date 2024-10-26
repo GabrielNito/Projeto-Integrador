@@ -43,8 +43,8 @@ export class UserRepository {
     });
   }
 
-  async update(data: UpdateUserDTO) {
-    const { id } = data;
+  async update(dto: UpdateUserDTO) {
+    const { id, ...data } = dto;
     return await users.update({
       where: { id },
       data,

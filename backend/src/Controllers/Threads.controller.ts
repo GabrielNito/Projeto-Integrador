@@ -42,13 +42,21 @@ export class ThreadsController {
   };
 
   createThread = async (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user?.id;
     try {
       const data = await this._threadsService.createThread(req.body, req);
       res.status(201).json({
         data,
         message: 'Thread created successfully',
       });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateThread = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await this._threadsService.updateThread(req.body, req);
+      res.status(201).json({ message: 'Thread updated successfully', data });
     } catch (error) {
       next(error);
     }
