@@ -1,4 +1,5 @@
 import { CreatePostsDTO } from '../Dtos/create/CreatePostsDTO.dto';
+import { UpdatePostsDTO } from '../Dtos/update/UpdatePostsDTO.dto';
 import Posts from '../Entities/posts.entity';
 
 export class PostsRepository {
@@ -21,6 +22,15 @@ export class PostsRepository {
         threadId,
         userId,
       },
+    });
+  }
+
+  async update(dto: UpdatePostsDTO) {
+    const { id, ...data } = dto;
+
+    return await Posts.update({
+      where: { id },
+      data,
     });
   }
 }

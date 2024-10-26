@@ -1,5 +1,12 @@
+import { JWTPayload } from 'jose';
 import { PostsService } from '../Services/Posts.service';
 import { Response, Request, NextFunction } from 'express';
+
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: JWTPayload;
+  }
+}
 
 export class PostsController {
   private _postService: PostsService;
@@ -38,6 +45,18 @@ export class PostsController {
       const data = await this._postService.createPost(req.body, req);
       res.status(201).json({
         message: 'Post created successfully',
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updatePost = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await this._postService.updatePosts(req.body, req);
+      res.status(201).json({
+        message: 'Post updated successfully',
         data,
       });
     } catch (error) {
