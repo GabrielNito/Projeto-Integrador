@@ -12,4 +12,6 @@ router.get('/:id', Posts.getPostById);
 
 router.post('/', auth, Posts.createPost);
 
+router.patch('/', auth, Posts.updatePost);
+
 export default router;
