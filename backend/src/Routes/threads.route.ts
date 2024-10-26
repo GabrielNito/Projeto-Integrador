@@ -17,4 +17,6 @@ router.post('/', dtoValidate(CreateThreadsDTO), auth, Threads.createThread);
 
 router.patch('/', dtoValidate(UpdateThreadDTO), auth, Threads.updateThread);
 
+router.delete('/:id', auth, Threads.deleteThread);
+
 export default router;
