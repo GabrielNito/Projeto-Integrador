@@ -32,4 +32,16 @@ export class PostsController {
       next(error);
     }
   };
+
+  createPost = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await this._postService.createPost(req.body, req);
+      res.status(201).json({
+        message: 'Post created successfully',
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
