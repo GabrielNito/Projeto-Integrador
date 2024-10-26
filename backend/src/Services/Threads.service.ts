@@ -40,4 +40,18 @@ export class ThreadsService {
 
     return await this._threadsRepository.update(data);
   }
+
+  async deleteThread(req: Request) {
+    const id = Number(req.params.id);
+    const user = req.user;
+    const thread = await this._threadsRepository.findById(id);
+
+    console.log(user?.id, thread?.userId);
+
+    if (user?.id !== thread?.userId) {
+      throw Error('Operation not allowed');
+    }
+
+    return await this._threadsRepository.delete(id);
+  }
 }

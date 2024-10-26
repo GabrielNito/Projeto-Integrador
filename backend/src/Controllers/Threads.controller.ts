@@ -61,4 +61,15 @@ export class ThreadsController {
       next(error);
     }
   };
+
+  deleteThread = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await this._threadsService.deleteThread(req);
+      res.status(201).json({
+        message: 'Thread deleted successfully',
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
