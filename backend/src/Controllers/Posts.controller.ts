@@ -63,4 +63,16 @@ export class PostsController {
       next(error);
     }
   };
+
+  deletePost = async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id);
+    try {
+      await this._postService.deletePost(id, req);
+      res.status(201).json({
+        messsage: 'Post deleted successfully',
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

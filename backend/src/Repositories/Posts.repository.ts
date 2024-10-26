@@ -33,4 +33,10 @@ export class PostsRepository {
       data,
     });
   }
+
+  async delete(id: number) {
+    return await Posts.delete({
+      where: { id },
+    });
+  }
 }
