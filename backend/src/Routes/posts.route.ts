@@ -14,4 +14,6 @@ router.post('/', auth, Posts.createPost);
 
 router.patch('/', auth, Posts.updatePost);
 
+router.delete('/:id', auth, Posts.deletePost);
+
 export default router;

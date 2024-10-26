@@ -39,4 +39,15 @@ export class PostsService {
 
     return await this._postsRepository.update(data);
   }
+
+  async deletePost(id: number, req: Request) {
+    const user = req.user;
+    const post = await this._postsRepository.findById(id);
+
+    if (user?.role !== 'Administrator' && user?.id !== post?.userId) {
+      throw Error('Operation not allowed');
+    }
+
+    return await this._postsRepository.delete(id);
+  }
 }
