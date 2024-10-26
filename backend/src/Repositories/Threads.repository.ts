@@ -29,4 +29,10 @@ export class ThreadsRepository {
       data,
     });
   }
+
+  async delete(id: number) {
+    return await Threads.delete({
+      where: { id },
+    });
+  }
 }
