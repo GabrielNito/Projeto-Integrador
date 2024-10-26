@@ -1,6 +1,14 @@
+import { JWTPayload } from 'jose';
+
 import { Request, Response, NextFunction } from 'express';
 import { ThreadsService } from '../Services/Threads.service';
-import { CreateThreadsDTO } from '../Dtos/create/CreateThreadsDTO.dto';
+
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: JWTPayload;
+  }
+}
+
 export class ThreadsController {
   private _threadsService: ThreadsService;
 
@@ -40,6 +48,15 @@ export class ThreadsController {
         data,
         message: 'Thread created successfully',
       });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateThread = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await this._threadsService.updateThread(req.body, req);
+      res.status(201).json({ message: 'Thread updated successfully', data });
     } catch (error) {
       next(error);
     }

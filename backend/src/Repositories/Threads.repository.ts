@@ -1,3 +1,4 @@
+import { UpdateThreadDTO } from '../Dtos/update/UpdateThreadDTO.dto';
 import Threads from '../Entities/threads.entity';
 
 export class ThreadsRepository {
@@ -18,6 +19,14 @@ export class ThreadsRepository {
         title,
         userId,
       },
+    });
+  }
+
+  async update(dto: UpdateThreadDTO) {
+    const { id, ...data } = dto;
+    return await Threads.update({
+      where: { id },
+      data,
     });
   }
 }
