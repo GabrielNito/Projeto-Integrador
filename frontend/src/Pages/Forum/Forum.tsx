@@ -1,4 +1,4 @@
-import Thread from "@/components/Forum/Thread";
+import Thread from "@/components/Forum/Thread/";
 import Navbar from "@/components/Navbar/Navbar";
 import { useEffect } from "react";
 

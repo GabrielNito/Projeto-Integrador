@@ -6,7 +6,7 @@ import { User } from "@/components/Dashboard/GerenciamentoDeUsuarios/utils";
 import DashboardPagination from "@/components/Dashboard/GerenciamentoDeUsuarios/DashboardPagination";
 import DashboardTable from "@/components/Dashboard/GerenciamentoDeUsuarios/DashboardTable";
 import AvisoMobile from "@/components/Dashboard/GerenciamentoDeUsuarios/AvisoMobile";
-import { Input } from "@/components/ui/input"; // Make sure to import the Input component
+import { Input } from "@/components/ui/input";
 
 const API_URL = import.meta.env.VITE_FETCH_URL || "http://localhost:3001";
 
@@ -28,8 +28,6 @@ export default function GerenciamentoDeUsuarios() {
     setError(null);
 
     try {
-      console.log("Fetching from:", `${API_URL}/api/users/`);
-
       const response = await fetch(`${API_URL}/api/users/`, {
         method: "GET",
         headers: {
@@ -38,8 +36,6 @@ export default function GerenciamentoDeUsuarios() {
       });
 
       const result: Response = await response.json();
-      console.log(result.data);
-
       setUsers(result.data);
     } catch (error) {
       setError(

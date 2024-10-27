@@ -65,7 +65,6 @@ export default function Forum() {
       });
 
       const result: Response = await response.json();
-      console.log(result.data);
 
       setThreads(result.data);
     } catch (error) {
@@ -96,7 +95,7 @@ export default function Forum() {
 
         <div className="w-full grid lg:grid-cols-2 gap-4">
           {threads.map((thread) => {
-            return <ThreadCard thread={thread} />;
+            return <ThreadCard thread={thread} key={thread.id} />;
           })}
 
           {isLoading && <ThreadCardLoading />}

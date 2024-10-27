@@ -7,8 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { Check, X, ArrowRight } from "lucide-react";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle";
 import { useToast } from "@/hooks/use-toast";
-import ThreadPostUser from "@/components/Forum/ThreadPostUser";
-import ThreadPostContent from "@/components/Forum/ThreadPostContent";
+// import ThreadPostUser from "@/components/Forum/ThreadPostUser";
+// import ThreadPostContent from "@/components/Forum/ThreadPostContent";
 
 interface ThreadData {
   threadId: number;

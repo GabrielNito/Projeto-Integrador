@@ -2,7 +2,6 @@ import "./index.css";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./Pages/HomePage/HomePage";
-import Forum from "./Pages/Forum/Forum";
 import Geral from "./Pages/Dashboard/Geral";
 import Estatisticas from "./Pages/Dashboard/Admin/Estatisticas";
 import { ThemeProvider } from "./components/theme-provider";
@@ -16,6 +15,8 @@ import General from "./components/Dashboard/General";
 import Login from "./Pages/Login/Login";
 import SignIn from "./Pages/Login/SignIn";
 import RecuperacaoSenha from "./Pages/Login/RecuperacaoSenha";
+import Thread from "./Pages/Threads/Thread";
+import Forum from "./Pages/Threads/Threads";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/forum",
     element: <Forum />,
+  },
+  {
+    path: "/forum/:id",
+    element: <Thread />,
   },
   {
     path: "/login",
