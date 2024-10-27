@@ -18,9 +18,16 @@ export class LoginService {
       throw Error('Invalid passoword');
     }
 
-    const payload = { id: user.id, email: user.email };
-    const secret = new TextEncoder().encode(process.env.JWT);
-    const alg = 'HS1024';
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      username: user.username,
+      status: user.status,
+    };
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+    const alg = 'HS256';
 
     const token = await new jose.SignJWT(payload)
       .setProtectedHeader({ alg })

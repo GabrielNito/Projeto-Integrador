@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { CreateUsersDTO } from '../Dtos/create/CreateUsersDTO.dto';
 import { UpdateUserDTO } from '../Dtos/update/UpdateUserDTO.dto';
 import { UserRepository } from '../Repositories/Users.repository';
@@ -48,5 +49,27 @@ export class UsersService {
 
     const { password: undefined, ...updated } = await this._userRepository.update(data);
     return updated;
+  }
+
+  async deleteUser(req: Request) {
+    const userId = Number(req.params.id);
+    const userFromToken = req.user;
+
+    const user = await this._userRepository.findById(userId);
+
+    if (user?.status === 'inactive') {
+      throw Error('User is already inactive');
+    }
+    console.log(userFromToken?.role);
+    if (
+      !userFromToken?.role ||
+      (userFromToken?.role !== 'Administrator' && userId !== userFromToken?.id)
+    ) {
+      throw Error('Operation not allowed');
+    }
+
+    const deleteUser = await this._userRepository.delete(userId, 'inactive');
+
+    return deleteUser;
   }
 }

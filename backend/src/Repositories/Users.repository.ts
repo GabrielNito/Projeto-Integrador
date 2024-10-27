@@ -50,4 +50,11 @@ export class UserRepository {
       data,
     });
   }
+
+  async delete(id: number, status: string) {
+    return await users.update({
+      where: { id },
+      data: { status },
+    });
+  }
 }

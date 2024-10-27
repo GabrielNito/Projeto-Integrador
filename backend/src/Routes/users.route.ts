@@ -15,6 +15,8 @@ router.get('/:id', Users.getUserById);
 
 router.post('/', dtoValidate(CreateUsersDTO), Users.createUser);
 
-router.patch('/:id', dtoValidate(UpdateUserDTO), auth, Users.updateUser);
+router.patch('/', dtoValidate(UpdateUserDTO), auth, Users.updateUser);
+
+router.delete('/:id', auth, Users.deleteUser);
 
 export default router;

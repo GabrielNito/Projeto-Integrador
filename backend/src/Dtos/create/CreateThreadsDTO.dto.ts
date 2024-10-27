@@ -4,8 +4,4 @@ export class CreateThreadsDTO {
   @IsString()
   @IsNotEmpty()
   title!: string;
-
-  @IsInt()
-  @IsNotEmpty()
-  userId!: number;
 }
