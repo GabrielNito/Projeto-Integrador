@@ -13,10 +13,11 @@ model Users {
   password              String
   email                 String    @unique
   role                  String
+  status                String    @default("active")
   createAt              DateTime  @default(now())
   updateAt              DateTime  @updatedAt
-  likedPosts            String
-  likedThreads          String
+  likedPosts            String?
+  likedThreads          String?
   avatar                String?
 
   badges                UserBadges[]
