@@ -9,23 +9,8 @@ import {
 } from "@/components/ui/card";
 import { HeartIcon, MessageCircleIcon, LockIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-
-interface Post {
-  id: number;
-  content: string;
-  likes: number;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
-  threadId: number;
-}
-
-interface User {
-  id: number;
-  username: string;
-  role: string;
-  avatar: string | null;
-}
+import { PostType, UserType } from "../types";
+import { badgeStyles } from "@/utils/global.types";
 
 interface ThreadProps {
   id: number;
@@ -35,8 +20,8 @@ interface ThreadProps {
   createdAt: string;
   updatedAt: string;
   userId: number;
-  posts: Post[];
-  user: User;
+  posts: PostType[];
+  user: UserType;
 }
 
 export default function ThreadCard({ thread }: { thread: ThreadProps }) {
@@ -75,7 +60,13 @@ export default function ThreadCard({ thread }: { thread: ThreadProps }) {
               <span className="text-sm text-muted-foreground">
                 {thread.user.username}
               </span>
-              <Badge variant="secondary">{thread.user.role}</Badge>
+              <Badge
+                className={`w-fit ${
+                  thread.user && badgeStyles[thread.user.role]
+                }`}
+              >
+                {thread.user.role}
+              </Badge>
             </div>
             <p className="text-sm text-muted-foreground">
               Criado em {formatDate(thread.createdAt)}
