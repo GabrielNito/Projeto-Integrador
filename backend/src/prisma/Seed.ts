@@ -15,7 +15,6 @@ async function seed() {
           role: 'ADMIN',
           likedPosts: '[]', // Default value: empty array
           likedThreads: '[]', // Default value: empty array
-          badges: '[]', // Default value: empty array
         },
       });
     })
@@ -32,7 +31,6 @@ async function seed() {
           role: 'STUDENT',
           likedPosts: '[]', // Default value: empty array
           likedThreads: '[]', // Default value: empty array
-          badges: '[]', // Default value: empty array
         },
       });
     })
@@ -120,6 +118,51 @@ async function seed() {
           userId,
         },
       });
+    })
+  );
+
+  // Create some badges type
+
+  const badges = {
+    Coordenador: 'bg-blue-900 hover:bg-blue-800 text-white',
+    Professor: 'bg-blue-700 hover:bg-blue-600 text-white',
+    Aluno: 'bg-gray-400 hover:bg-gray-300 text-black',
+    '1° semestre': 'bg-blue-400 hover:bg-blue-300 text-black',
+    '2° semestre': 'bg-teal-400 hover:bg-teal-300 text-black',
+    '3° semestre': 'bg-yellow-400 hover:bg-yellow-300 text-black',
+    '4° semestre': 'bg-orange-400 hover:bg-orange-300 text-black',
+    '5° semestre': 'bg-red-400 hover:bg-red-300 text-black',
+    '6° semestre': 'bg-purple-400 hover:bg-purple-300 text-black',
+  };
+
+  console.log('Seed data created successfully');
+  // Insert badges into the Badges table
+  const badgeEntries = await Promise.all(
+    Object.entries(badges).map(async ([title, style]) => {
+      return prisma.badges.create({
+        data: {
+          title,
+          style,
+        },
+      });
+    })
+  );
+
+  // Assign badges to users (randomly for demonstration purposes)
+  await Promise.all(
+    users.map(async (user) => {
+      const badgeIds = badgeEntries
+        .map((badge) => badge.id)
+        .filter(() => Math.random() > 0.5); // Assign badges randomly
+
+      if (badgeIds.length > 0) {
+        await prisma.userBadges.createMany({
+          data: badgeIds.map((badgeId) => ({
+            userId: user.id,
+            badgeId,
+          })),
+        });
+      }
     })
   );
 

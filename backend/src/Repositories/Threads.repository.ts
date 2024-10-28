@@ -1,3 +1,4 @@
+import { UpdateThreadDTO } from '../Dtos/update/UpdateThreadDTO.dto';
 import Threads from '../Entities/threads.entity';
 
 export class ThreadsRepository {
@@ -9,6 +10,29 @@ export class ThreadsRepository {
     return await Threads.findUnique({
       where: { id },
       include: { posts: true, user: true },
+    });
+  }
+
+  async create(title: string, userId: number) {
+    return await Threads.create({
+      data: {
+        title,
+        userId,
+      },
+    });
+  }
+
+  async update(dto: UpdateThreadDTO) {
+    const { id, ...data } = dto;
+    return await Threads.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async delete(id: number) {
+    return await Threads.delete({
+      where: { id },
     });
   }
 }
