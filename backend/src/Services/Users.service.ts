@@ -8,19 +8,53 @@ export class UsersService {
   private _userRepository = new UserRepository();
 
   async getAllUsers() {
-    return await this._userRepository.findMany();
+    const data = await this._userRepository.findMany();
+
+    const newData = data.map((user) => {
+      let { likedPosts, likedThreads, ...result } = user;
+      let parsedLikedPosts = JSON.parse(likedPosts || '[]');
+      let parsedLikedThreads = JSON.parse(likedThreads || '[]');
+
+      const newUser = {
+        ...result,
+        likedPosts: parsedLikedPosts,
+        likedThreads: parsedLikedThreads,
+      };
+
+      return newUser;
+    });
+
+    return newData;
   }
 
   async getUserById(id: number) {
-    return await this._userRepository.findById(id);
+    const data = await this._userRepository.findById(id);
+    if (!data) {
+      throw Error('User not found');
+    }
+    let parsedLikedPosts = JSON.parse(data?.likedPosts || '[]');
+    let parsedLikedThreads = JSON.parse(data?.likedThreads || '[]');
+
+    return {
+      ...data,
+      likedPosts: parsedLikedPosts,
+      likedThreads: parsedLikedThreads,
+    };
   }
 
   async getUserByEmail(email: string) {
-    return await this._userRepository.findByEmail(email);
+    const data = await this._userRepository.findByEmail(email);
+    let parsedLikedPosts = JSON.parse(data?.likedPosts || '[]');
+    let parsedLikedThreads = JSON.parse(data?.likedThreads || '[]');
+    return {
+      ...data,
+      likedPosts: parsedLikedPosts,
+      likedThreads: parsedLikedThreads,
+    };
   }
 
   async createUser(data: CreateUsersDTO) {
-    const { likedPosts, likedThreads, badges } = data;
+    const { likedPosts, likedThreads } = data;
     const user = await this.getUserByEmail(data.email);
 
     data.password = await encryptPassword(data.password);
@@ -33,7 +67,6 @@ export class UsersService {
       ...data,
       likedPosts: JSON.stringify(likedPosts) || '',
       likedThreads: JSON.stringify(likedThreads) || '',
-      badges: JSON.stringify(badges) || '',
     };
 
     const { password: undefined, ...created } = await this._userRepository.create(
@@ -43,6 +76,13 @@ export class UsersService {
   }
 
   async updateUser(data: UpdateUserDTO) {
+    console.log(data.id, typeof data.id);
+    const user = await this._userRepository.findById(data.id);
+
+    if (!user) {
+      throw Error('User not found');
+    }
+
     if (data.password) {
       data.password = await encryptPassword(data.password);
     }
@@ -60,7 +100,6 @@ export class UsersService {
     if (user?.status === 'inactive') {
       throw Error('User is already inactive');
     }
-    console.log(userFromToken?.role);
     if (
       !userFromToken?.role ||
       (userFromToken?.role !== 'Administrator' && userId !== userFromToken?.id)
