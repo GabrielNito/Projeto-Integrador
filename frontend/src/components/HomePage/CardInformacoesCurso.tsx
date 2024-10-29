@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Separator } from "../ui/separator";
@@ -58,8 +59,10 @@ export default function CardInformacoesCurso() {
           details={info.details}
         />
       ))}
-      <Button className="mt-4 w-full bg-gradient-to-r text-white">
-        Inscreva-se para o Vestibular
+      <Button className="mt-4 w-full bg-gradient-to-r text-white" asChild>
+        <Link to="https://vestibularfatec.com.br/" target="_blank">
+          Inscreva-se para o Vestibular
+        </Link>
       </Button>
     </Card>
   );
