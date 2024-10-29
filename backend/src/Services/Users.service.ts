@@ -7,7 +7,11 @@ import { encryptPassword } from '../utils/encryptPassword.utils';
 export class UsersService {
   private _userRepository = new UserRepository();
 
-  async getAllUsers() {
+  async getAllUsers(req: Request) {
+    const user = req.user;
+    if (user?.role !== 'Administratror') {
+      throw Error('Operation not allowed');
+    }
     const data = await this._userRepository.findMany();
 
     const newData = data.map((user) => {
@@ -27,8 +31,13 @@ export class UsersService {
     return newData;
   }
 
-  async getUserById(id: number) {
+  async getUserById(id: number, req: Request) {
+    const user = req.user;
     const data = await this._userRepository.findById(id);
+
+    if (user?.role !== 'Administratror') {
+      throw Error('Operation not allowed');
+    }
     if (!data) {
       throw Error('User not found');
     }
@@ -76,7 +85,6 @@ export class UsersService {
   }
 
   async updateUser(data: UpdateUserDTO) {
-    console.log(data.id, typeof data.id);
     const user = await this._userRepository.findById(data.id);
 
     if (!user) {

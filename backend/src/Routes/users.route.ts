@@ -9,9 +9,9 @@ const router = Router();
 
 const Users = new UsersController();
 
-router.get('/', Users.getAllUsers);
+router.get('/', auth, Users.getAllUsers);
 
-router.get('/:id', Users.getUserById);
+router.get('/:id', auth, Users.getUserById);
 
 router.post('/', dtoValidate(CreateUsersDTO), Users.createUser);
 
