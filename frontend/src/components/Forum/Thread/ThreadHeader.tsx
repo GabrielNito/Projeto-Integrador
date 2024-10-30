@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Heart, MessageSquare } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 import { ThreadType } from "../types";
 import { badgeStyles } from "@/utils/global.types";
@@ -53,10 +53,6 @@ export default function ThreadHeader({ thread, setLikes }: ThreadHeaderProps) {
         <Button variant="ghost" size="sm" onClick={handleLike}>
           <Heart className="w-4 h-4 mr-2" />
           {thread.likes}
-        </Button>
-        <Button variant="ghost" size="sm">
-          <MessageSquare className="w-4 h-4 mr-2" />
-          {thread?.posts.length}
         </Button>
       </CardFooter>
     </Card>

@@ -27,6 +27,8 @@ export default function Thread() {
 
       const result: ResponseThread = await response.json();
 
+      document.title = `${result.data.title} - DSM`;
+
       setThread(result.data);
       setLikes(result.data.likes);
     } catch (error) {

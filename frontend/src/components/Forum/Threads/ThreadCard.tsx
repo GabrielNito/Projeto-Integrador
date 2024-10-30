@@ -11,6 +11,7 @@ import { HeartIcon, MessageCircleIcon, LockIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PostType, UserType } from "../types";
 import { badgeStyles } from "@/utils/global.types";
+import ThreadCardLike from "./ThreadCardLike";
 
 interface ThreadProps {
   id: number;
@@ -46,10 +47,10 @@ export default function ThreadCard({ thread }: { thread: ThreadProps }) {
             {thread.user.username.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col max-lg:gap-4">
           <Button
             variant="link"
-            className="w-fit text-lg font-semibold pl-0"
+            className="w-fit text-lg font-semibold max-lg:text-wrap pl-0"
             asChild
           >
             <Link to={`/forum/${thread.id}`}>{thread.title}</Link>
@@ -100,13 +101,13 @@ export default function ThreadCard({ thread }: { thread: ThreadProps }) {
       </CardContent>
       <CardFooter className="flex justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm">
-            <HeartIcon className="h-4 w-4 mr-2" />
-            {thread.likes}
-          </Button>
-          <Button variant="ghost" size="sm">
-            <MessageCircleIcon className="h-4 w-4 mr-2" />
-            {thread.posts.length}
+          <ThreadCardLike threadId={thread.id} />
+
+          <Button variant="ghost" size="sm" asChild>
+            <Link to={`/forum/${thread.id}`}>
+              <MessageCircleIcon className="h-4 w-4 mr-2" />
+              {thread.posts.length}
+            </Link>
           </Button>
         </div>
         {thread.isClosed && (
