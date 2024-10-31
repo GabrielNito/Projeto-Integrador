@@ -4,6 +4,7 @@ import {
   IsStrongPassword,
   IsEnum,
   IsNumber,
+  IsInt,
 } from 'class-validator';
 
 enum Role {

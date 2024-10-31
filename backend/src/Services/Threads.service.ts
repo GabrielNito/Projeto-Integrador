@@ -46,8 +46,6 @@ export class ThreadsService {
     const user = req.user;
     const thread = await this._threadsRepository.findById(id);
 
-    console.log(user?.id, thread?.userId);
-
     if (user?.id !== thread?.userId) {
       throw Error('Operation not allowed');
     }

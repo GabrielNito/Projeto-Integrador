@@ -9,9 +9,12 @@ export class LoginService {
     const user = await this._userService.getUserByEmail(email);
 
     if (!user) {
-      throw Error('Usuário não encontrado');
+      throw Error('User not found');
     }
 
+    if (!user.password) {
+      throw Error('Invalid password');
+    }
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {

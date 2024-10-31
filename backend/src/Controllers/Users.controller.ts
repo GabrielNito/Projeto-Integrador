@@ -14,9 +14,9 @@ export class UsersController {
     this._usersService = new UsersService();
   }
 
-  getAllUsers = async (_req: Request, res: Response, next: NextFunction) => {
+  getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = await this._usersService.getAllUsers();
+      const data = await this._usersService.getAllUsers(req);
       res.status(200).json({ message: 'Success', data });
     } catch (error) {
       next(error);
@@ -26,7 +26,7 @@ export class UsersController {
   getUserById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = Number(req.params.id);
-      const data = await this._usersService.getUserById(id);
+      const data = await this._usersService.getUserById(id, req);
       res.status(200).json({ message: 'Success', data });
     } catch (error) {
       next(error);
@@ -43,7 +43,8 @@ export class UsersController {
   };
 
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
-    req.body = { ...req.body, id: req.user?.id };
+    req.body = { ...req.body, id: Number(req.user?.id as number) };
+
     try {
       const updatedUser = await this._usersService.updateUser(req.body);
       res.status(201).json({ message: 'User updated successfully', data: updatedUser });

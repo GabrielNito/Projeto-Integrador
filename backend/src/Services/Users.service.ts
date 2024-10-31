@@ -7,16 +7,59 @@ import { encryptPassword } from '../utils/encryptPassword.utils';
 export class UsersService {
   private _userRepository = new UserRepository();
 
-  async getAllUsers() {
-    return await this._userRepository.findMany();
+  async getAllUsers(req: Request) {
+    const user = req.user;
+    if (user?.role !== 'Administratror') {
+      throw Error('Operation not allowed');
+    }
+    const data = await this._userRepository.findMany();
+
+    const newData = data.map((user) => {
+      let { likedPosts, likedThreads, ...result } = user;
+      let parsedLikedPosts = JSON.parse(likedPosts || '[]');
+      let parsedLikedThreads = JSON.parse(likedThreads || '[]');
+
+      const newUser = {
+        ...result,
+        likedPosts: parsedLikedPosts,
+        likedThreads: parsedLikedThreads,
+      };
+
+      return newUser;
+    });
+
+    return newData;
   }
 
-  async getUserById(id: number) {
-    return await this._userRepository.findById(id);
+  async getUserById(id: number, req: Request) {
+    const user = req.user;
+    const data = await this._userRepository.findById(id);
+
+    if (user?.role !== 'Administratror') {
+      throw Error('Operation not allowed');
+    }
+    if (!data) {
+      throw Error('User not found');
+    }
+    let parsedLikedPosts = JSON.parse(data?.likedPosts || '[]');
+    let parsedLikedThreads = JSON.parse(data?.likedThreads || '[]');
+
+    return {
+      ...data,
+      likedPosts: parsedLikedPosts,
+      likedThreads: parsedLikedThreads,
+    };
   }
 
   async getUserByEmail(email: string) {
-    return await this._userRepository.findByEmail(email);
+    const data = await this._userRepository.findByEmail(email);
+    let parsedLikedPosts = JSON.parse(data?.likedPosts || '[]');
+    let parsedLikedThreads = JSON.parse(data?.likedThreads || '[]');
+    return {
+      ...data,
+      likedPosts: parsedLikedPosts,
+      likedThreads: parsedLikedThreads,
+    };
   }
 
   async createUser(data: CreateUsersDTO) {
@@ -42,6 +85,12 @@ export class UsersService {
   }
 
   async updateUser(data: UpdateUserDTO) {
+    const user = await this._userRepository.findById(data.id);
+
+    if (!user) {
+      throw Error('User not found');
+    }
+
     if (data.password) {
       data.password = await encryptPassword(data.password);
     }
@@ -59,7 +108,6 @@ export class UsersService {
     if (user?.status === 'inactive') {
       throw Error('User is already inactive');
     }
-    console.log(userFromToken?.role);
     if (
       !userFromToken?.role ||
       (userFromToken?.role !== 'Administrator' && userId !== userFromToken?.id)
