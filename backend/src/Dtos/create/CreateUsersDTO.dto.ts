@@ -1,16 +1,10 @@
 import {
   IsEmail,
-  IsEnum,
   IsOptional,
   IsString,
   IsStrongPassword,
   Matches,
 } from 'class-validator';
-
-enum Role {
-  'Administrator',
-  'Student',
-}
 
 export class CreateUsersDTO {
   @IsString()
@@ -24,10 +18,6 @@ export class CreateUsersDTO {
     message: 'Email must be a valid fatec.sp.gov.br address',
   })
   email!: string;
-
-  @IsString()
-  @IsEnum(Role, { message: 'Role must be one of the valid ones' })
-  role!: string;
 
   @IsString()
   @IsOptional()

@@ -68,7 +68,7 @@ export class UsersService {
 
     data.password = await encryptPassword(data.password);
 
-    if (user) {
+    if (user.email) {
       throw Error('Email já cadastrado');
     }
 
