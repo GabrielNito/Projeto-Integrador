@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ColumnFiltersState,
   OnChangeFn,
@@ -11,6 +11,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { type ColumnDef } from "@tanstack/react-table";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
 
 import {
   Table,
@@ -20,24 +24,130 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge"; // Assuming Badge component is imported
-import { User, columns } from "./utils";
+import { Badge } from "@/components/ui/badge";
+import Editar from "./Editar";
+
+export type Post = {
+  id: number;
+  content: string;
+  likes: number;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  threadId: number;
+};
+
+export type User = {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+  avatar: string | null;
+  badges: string;
+  createdPosts: Post[];
+};
 
 const badgeStyles: { [key: string]: string } = {
-  Coordenador: "bg-blue-900 hover:bg-blue-800 text-white",
-  Professor: "bg-blue-700 hover:bg-blue-600 text-white",
-  Aluno: "bg-gray-400 hover:bg-gray-300 text-black",
-  "1° semestre": "bg-blue-400 hover:bg-blue-300 text-black",
-  "2° semestre": "bg-teal-400 hover:bg-teal-300 text-black",
-  "3° semestre": "bg-yellow-400 hover:bg-yellow-300 text-black",
-  "4° semestre": "bg-orange-400 hover:bg-orange-300 text-black",
-  "5° semestre": "bg-red-400 hover:bg-red-300 text-black",
-  "6° semestre": "bg-purple-400 hover:bg-purple-300 text-black",
+  admin: "bg-red-500 hover:bg-red-400 text-white",
+  student: "bg-blue-500 hover:bg-blue-400 text-white",
+  moderator: "bg-blue-500 hover:bg-blue-400 text-white",
+  user: "bg-gray-400 hover:bg-gray-300 text-black",
 };
 
 type BadgeName = keyof typeof badgeStyles;
 
 const getBadgeClass = (badge: BadgeName) => badgeStyles[badge] || "";
+
+export const columns: ColumnDef<User>[] = [
+  {
+    accessorKey: "avatar",
+    header: "Avatar",
+    cell: ({ row }) => {
+      const user = row.original;
+      return (
+        <Avatar className="h-10 w-10">
+          <AvatarImage src={user.avatar || ""} alt={user.username} />
+          <AvatarFallback>
+            {user.username.slice(0, 2).toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+      );
+    },
+  },
+  {
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Username
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => {
+      const role = row.original.role.toLowerCase() as BadgeName;
+      return <Badge className={getBadgeClass(role)}>{row.original.role}</Badge>;
+    },
+  },
+  {
+    accessorKey: "badges",
+    header: "Badges",
+    cell: ({ row }) => {
+      const badges = row.original.badges;
+
+      return badges && badges.length > 0 ? (
+        <div className="flex gap-2">
+          {JSON.parse(badges) ? (
+            <span className="text-muted-foreground">-</span>
+          ) : (
+            JSON.parse(badges).map((badge: string, index: number) => (
+              <Badge key={`${badge}-${index}`} variant="outline">
+                {badge}
+              </Badge>
+            ))
+          )}
+        </div>
+      ) : (
+        <span className="text-muted-foreground">-</span>
+      );
+    },
+  },
+  {
+    accessorKey: "createdPosts",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Posts
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return row.original.createdPosts.length.toString();
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const user = row.original;
+      return <Editar user={user} />;
+    },
+  },
+];
 
 interface DashboardTableProps {
   users: User[];
@@ -52,12 +162,7 @@ export default function DashboardTable({
   columnFilters,
   setColumnFilters,
 }: DashboardTableProps) {
-  useEffect(() => {
-    document.title = "Gerenciamento de Usuários - DSM";
-  }, []);
-
   const [sorting, setSorting] = useState<SortingState>([]);
-  //   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
@@ -111,26 +216,7 @@ export default function DashboardTable({
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>
-                  {cell.column.id === "role" ? (
-                    <div className="flex gap-2">
-                      {Array.isArray(cell.getValue() as string[]) ? (
-                        (cell.getValue() as string[]).map((role) => (
-                          <Badge
-                            key={role}
-                            className={`text-xs ${getBadgeClass(
-                              role as BadgeName
-                            )}`}
-                          >
-                            {role}
-                          </Badge>
-                        ))
-                      ) : (
-                        <span>Sem cargos</span>
-                      )}
-                    </div>
-                  ) : (
-                    flexRender(cell.column.columnDef.cell, cell.getContext())
-                  )}
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
             </TableRow>
@@ -138,7 +224,7 @@ export default function DashboardTable({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              Sem resultados.
+              No results found.
             </TableCell>
           </TableRow>
         )}

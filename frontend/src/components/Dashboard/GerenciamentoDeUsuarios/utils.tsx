@@ -4,14 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Editar from "./Editar";
 
+export type Post = {
+  id: number;
+  content: string;
+  likes: number;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  threadId: number;
+};
+
 export type User = {
-  id: string;
-  name: string;
-  nickname: string;
+  id: number;
+  username: string;
   email: string;
-  role: string[];
-  status: "Ativo" | "Suspenso";
-  postCount: number;
+  role: string;
+  avatar: string | null;
+  badges: string;
+  createdPosts: Post[];
 };
 
 export const columns: ColumnDef<User>[] = [
