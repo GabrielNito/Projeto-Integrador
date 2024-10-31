@@ -34,8 +34,4 @@ export class UpdateUserDTO {
   @IsOptional()
   @IsString()
   avatar?: string;
-
-  @IsOptional()
-  @IsString()
-  badges?: string;
 }

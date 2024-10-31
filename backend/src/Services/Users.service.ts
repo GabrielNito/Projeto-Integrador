@@ -20,7 +20,7 @@ export class UsersService {
   }
 
   async createUser(data: CreateUsersDTO) {
-    const { likedPosts, likedThreads, badges } = data;
+    const { likedPosts, likedThreads } = data;
     const user = await this.getUserByEmail(data.email);
 
     data.password = await encryptPassword(data.password);
@@ -33,7 +33,6 @@ export class UsersService {
       ...data,
       likedPosts: JSON.stringify(likedPosts) || '',
       likedThreads: JSON.stringify(likedThreads) || '',
-      badges: JSON.stringify(badges) || '',
     };
 
     const { password: undefined, ...created } = await this._userRepository.create(
