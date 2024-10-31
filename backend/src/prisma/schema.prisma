@@ -7,27 +7,27 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Users {
+model User {
   id                    Int       @id @default(autoincrement())
   username              String
   password              String
   email                 String    @unique
   role                  String
   status                String    @default("active")
-  createAt              DateTime  @default(now())
-  updateAt              DateTime  @updatedAt
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
   likedPosts            String?
   likedThreads          String?
   avatar                String?
 
-  badges                UserBadges[]
-  createdPosts          Posts[]
-  createdThreads        Threads[]
-  visits                Visits[]
-  allowedNotifications  UserNotifications[]
+  badges                UserBadge[]
+  createdPosts          Post[]
+  createdThreads        Thread[]
+  visits                Visit[]
+  allowedNotifications  UserNotification[]
 }
 
-model Posts { 
+model Post { 
   id          Int       @id @default(autoincrement())
   content     String
   likes       Int       @default(0)
@@ -36,11 +36,11 @@ model Posts {
   userId      Int       
   threadId    Int       
 
-  user        Users     @relation(fields: [userId], references: [id])
-  thread      Threads   @relation(fields: [threadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user        User      @relation(fields: [userId], references: [id])
+  thread      Thread    @relation(fields: [threadId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Threads {
+model Thread {
   id          Int       @id @default(autoincrement())
   title       String
   likes       Int       @default(0)
@@ -49,53 +49,52 @@ model Threads {
   updatedAt   DateTime  @updatedAt
   userId      Int       
 
-  user        Users     @relation(fields: [userId], references: [id])
-  posts       Posts[]
+  user        User      @relation(fields: [userId], references: [id])
+  posts       Post[]
 }
 
-model Visits {
+model Visit {
   id          Int       @id @default(autoincrement())
   exitedAt    DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
   userId      Int?      
 
-  user        Users?    @relation(fields: [userId], references: [id])
+  user        User?     @relation(fields: [userId], references: [id])
 }
 
-model Notifications {
+model Notification {
   id     Int      @id @default(autoincrement())
   title  String   
 
-  users  UserNotifications[]
+  users  UserNotification[]
 }
 
-model UserNotifications {
-  userId        Int
+model UserNotification {
+  userId         Int
   notificationId Int
 
-  user          Users          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  notification  Notifications  @relation(fields: [notificationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  notification   Notification  @relation(fields: [notificationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([userId, notificationId])
 }
 
-model Badges {
-  id  Int @id @default(autoincrement())
-  title String
-  style String?
+model Badge {
+  id       Int    @id @default(autoincrement())
+  title    String
+  style    String?
   iconPath String?
 
-  user UserBadges[]
+  users    UserBadge[]
 }
 
-model UserBadges {
+model UserBadge {
   userId  Int
   badgeId Int
 
-  user Users? @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  badges Badges @relation(fields: [badgeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  badge   Badge  @relation(fields: [badgeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([userId, badgeId])
-
 }

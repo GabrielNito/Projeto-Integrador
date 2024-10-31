@@ -4,6 +4,7 @@ import {
   IsStrongPassword,
   IsEnum,
   IsNumber,
+  IsInt,
 } from 'class-validator';
 
 enum Role {
@@ -34,8 +35,4 @@ export class UpdateUserDTO {
   @IsOptional()
   @IsString()
   avatar?: string;
-
-  @IsOptional()
-  @IsString()
-  badges?: string;
 }

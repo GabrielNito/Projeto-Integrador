@@ -40,8 +40,4 @@ export class CreateUsersDTO {
   @IsString()
   @IsOptional()
   avatar?: string;
-
-  @IsString()
-  @IsOptional()
-  badges?: string;
 }

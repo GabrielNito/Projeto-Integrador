@@ -9,6 +9,7 @@ export class UserRepository {
         createdPosts: true,
         createdThreads: true,
         visits: true,
+        badges: true,
       },
     });
   }
@@ -21,6 +22,7 @@ export class UserRepository {
         createdPosts: true,
         createdThreads: true,
         visits: true,
+        badges: true,
       },
     });
   }

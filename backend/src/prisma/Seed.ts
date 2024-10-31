@@ -7,7 +7,7 @@ async function seed() {
   const admins = await Promise.all(
     Array.from({ length: 2 }).map(async () => {
       const username = `admin_${Math.random().toString(36).substring(2, 7)}`;
-      return prisma.users.create({
+      return prisma.user.create({
         data: {
           username,
           password: 'password123', // Replace with a strong password
@@ -23,7 +23,7 @@ async function seed() {
   const students = await Promise.all(
     Array.from({ length: 18 }).map(async () => {
       const username = `student_${Math.random().toString(36).substring(2, 7)}`;
-      return prisma.users.create({
+      return prisma.user.create({
         data: {
           username,
           password: 'password123', // Replace with a strong password
@@ -42,7 +42,7 @@ async function seed() {
   const threads = await Promise.all(
     Array.from({ length: Math.floor(Math.random() * 11) + 10 }).map(async () => {
       const userId = users[Math.floor(Math.random() * users.length)].id;
-      return prisma.threads.create({
+      return prisma.thread.create({
         data: {
           title: `Thread about Web Development ${Math.random()
             .toString(36)
@@ -58,7 +58,7 @@ async function seed() {
     threads.flatMap((thread) =>
       Array.from({ length: Math.floor(Math.random() * 4) + 2 }).map(async () => {
         const userId = users[Math.floor(Math.random() * users.length)].id;
-        return prisma.posts.create({
+        return prisma.post.create({
           data: {
             content: `Reply to thread ${thread.id}: Post content ${Math.random()
               .toString(36)
@@ -82,7 +82,7 @@ async function seed() {
 
   const notifications = await Promise.all(
     notificationTitles.map(async (title) => {
-      return prisma.notifications.create({
+      return prisma.notification.create({
         data: {
           title,
         },
@@ -98,7 +98,7 @@ async function seed() {
         .filter(() => Math.random() > 0.5); // Assign notifications randomly
 
       if (notificationIds.length > 0) {
-        await prisma.userNotifications.createMany({
+        await prisma.userNotification.createMany({
           data: notificationIds.map((notificationId) => ({
             userId: user.id,
             notificationId,
@@ -113,7 +113,7 @@ async function seed() {
     Array.from({ length: 500 }).map(async () => {
       const userId =
         Math.random() > 0.2 ? users[Math.floor(Math.random() * users.length)].id : null;
-      return prisma.visits.create({
+      return prisma.visit.create({
         data: {
           userId,
         },
@@ -135,11 +135,10 @@ async function seed() {
     '6° semestre': 'bg-purple-400 hover:bg-purple-300 text-black',
   };
 
-  console.log('Seed data created successfully');
   // Insert badges into the Badges table
   const badgeEntries = await Promise.all(
     Object.entries(badges).map(async ([title, style]) => {
-      return prisma.badges.create({
+      return prisma.badge.create({
         data: {
           title,
           style,
@@ -156,7 +155,7 @@ async function seed() {
         .filter(() => Math.random() > 0.5); // Assign badges randomly
 
       if (badgeIds.length > 0) {
-        await prisma.userBadges.createMany({
+        await prisma.userBadge.createMany({
           data: badgeIds.map((badgeId) => ({
             userId: user.id,
             badgeId,
