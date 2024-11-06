@@ -1,16 +1,10 @@
 import {
   IsEmail,
-  IsEnum,
   IsOptional,
   IsString,
   IsStrongPassword,
   Matches,
 } from 'class-validator';
-
-enum Role {
-  'Administrator',
-  'Student',
-}
 
 export class CreateUsersDTO {
   @IsString()
@@ -26,10 +20,6 @@ export class CreateUsersDTO {
   email!: string;
 
   @IsString()
-  @IsEnum(Role, { message: 'Role must be one of the valid ones' })
-  role!: string;
-
-  @IsString()
   @IsOptional()
   likedPosts?: string;
 
@@ -40,8 +30,4 @@ export class CreateUsersDTO {
   @IsString()
   @IsOptional()
   avatar?: string;
-
-  @IsString()
-  @IsOptional()
-  badges?: string;
 }

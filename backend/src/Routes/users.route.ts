@@ -9,13 +9,13 @@ const router = Router();
 
 const Users = new UsersController();
 
-router.get('/', Users.getAllUsers);
+router.get('/', auth, Users.getAllUsers);
 
-router.get('/:id', Users.getUserById);
+router.get('/:id', auth, Users.getUserById);
 
 router.post('/', dtoValidate(CreateUsersDTO), Users.createUser);
 
-router.patch('/', dtoValidate(UpdateUserDTO), auth, Users.updateUser);
+router.patch('/:id', dtoValidate(UpdateUserDTO), auth, Users.updateUser);
 
 router.delete('/:id', auth, Users.deleteUser);
 

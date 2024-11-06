@@ -24,4 +24,22 @@ export class LoginController {
       next(error);
     }
   };
+
+  authenticateByToken = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { token } = req.body;
+    try {
+      if (!token) {
+        res.status(400).json({ message: 'Invalid token' });
+      }
+
+      const data = await this._loginService.authenticateByToken(token);
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
