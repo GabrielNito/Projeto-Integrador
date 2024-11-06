@@ -42,4 +42,30 @@ export class LoginService {
 
     return token;
   }
+
+  async authenticateByToken(token: string) {
+    try {
+      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
+      const { payload } = await jose.jwtVerify(token, secret, {
+        issuer: 'localhost://3001',
+        subject: 'user',
+      });
+
+      const user = await this._userService.getUserByIdForAuthenticateToken(Number(payload.id));
+      if (!user) {
+        throw new Error('Usuário não encontrado');
+      }
+
+      const data = {
+        logado: true,
+        admin: user.role === 'Administrator',
+        dados: user
+      };
+
+      return data;
+    } catch (error) {
+      throw new Error('Token inválido ou expirado');
+    }
+  }
 }

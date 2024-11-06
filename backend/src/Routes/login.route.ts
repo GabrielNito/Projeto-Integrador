@@ -6,4 +6,7 @@ const login = new LoginController();
 
 router.post('/authenticate', login.authenticate);
 
+router.post('/authenticateByToken', login.authenticateByToken);
+
+
 export default router;

@@ -119,4 +119,8 @@ export class UsersService {
 
     return deleteUser;
   }
+
+  async getUserByIdForAuthenticateToken(id:number){
+    return await this._userRepository.findById(id);
+  }
 }
