@@ -3,54 +3,12 @@ import { useEffect, useState } from "react";
 import ThreadCardLoading from "../../components/Forum/Threads/ThreadCardLoading";
 import ThreadCardError from "../../components/Forum/Threads/ThreadCardError";
 import ThreadCard from "../../components/Forum/Threads/ThreadCard";
-
-const API_URL = import.meta.env.VITE_FETCH_URL || "http://localhost:3001";
-
-interface Post {
-  id: number;
-  content: string;
-  likes: number;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
-  threadId: number;
-}
-
-interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  role: "STUDENT" | "ADMIN";
-  createAt: string;
-  updateAt: string;
-  likedPosts: string;
-  likedThreads: string;
-  avatar: string | null;
-  badges: string;
-}
-
-interface Thread {
-  id: number;
-  title: string;
-  likes: number;
-  isClosed: boolean;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
-  posts: Post[];
-  user: User;
-}
-
-interface Response {
-  data: Thread[];
-  message: string;
-}
+import { API_URL, ResponseThreads, ThreadType } from "@/components/Forum/types";
 
 export default function Forum() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [threads, setThreads] = useState<Thread[]>([]);
+  const [threads, setThreads] = useState<ThreadType[]>([]);
 
   async function fetchThreads() {
     setIsLoading(true);
@@ -64,7 +22,7 @@ export default function Forum() {
         },
       });
 
-      const result: Response = await response.json();
+      const result: ResponseThreads = await response.json();
 
       setThreads(result.data);
     } catch (error) {
@@ -78,13 +36,15 @@ export default function Forum() {
 
   useEffect(() => {
     fetchThreads();
+
+    document.title = "Fórum - DSM";
   }, []);
 
   return (
     <div>
       <Navbar />
 
-      <section className="p-4 max-lg:w-[calc(100%-2rem)] lg:px-20 lg:py-12 flex flex-col gap-4">
+      <section className="p-4 lg:w-[calc(100%-2rem)] lg:px-20 lg:py-12 flex flex-col gap-4">
         <h1 className="text-2xl font-semibold">
           Fórum DSM - Desenvolvimento de Software Multiplataforma
         </h1>
@@ -93,7 +53,7 @@ export default function Forum() {
           dúvidas, experiências, dicas e colabore com a comunidade
         </h2>
 
-        <div className="w-full grid lg:grid-cols-2 gap-4">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
           {threads.map((thread) => {
             return <ThreadCard thread={thread} key={thread.id} />;
           })}
