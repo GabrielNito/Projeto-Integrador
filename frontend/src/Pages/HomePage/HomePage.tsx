@@ -11,8 +11,6 @@ export default function Home() {
     <>
       <Navbar />
 
-      {/* <LinksSection /> */}
-
       <ContentHomePage />
     </>
   );
