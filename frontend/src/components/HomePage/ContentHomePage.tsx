@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import CardInformacoesCurso from "./CardInformacoesCurso";
-import DialogCollections from "./DialogCollections";
+import ContentCards from "./ContentCards";
 
 interface IChildrenProps {
   children: ReactNode;
@@ -42,7 +42,7 @@ export default function ContentHomePage() {
                 </Paragraph>
               </div>
 
-              <DialogCollections />
+              <ContentCards />
 
               <div className="w-full text-justify">
                 <Paragraph>
