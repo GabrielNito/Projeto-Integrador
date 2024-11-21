@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export default function Configuracoes() {
   useEffect(() => {
-    document.title = "Configurações - DSM";
+    document.title = "Configurações da Conta - DSM";
   }, []);
-  return <DashboardTitle title="Configurações" />;
+  return <DashboardTitle title="Configurações da Conta" />;
 }

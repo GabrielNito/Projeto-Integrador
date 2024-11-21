@@ -3,10 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  LayoutDashboard,
   MessageSquare,
-  Settings,
-  AlertTriangle,
   User2,
   UserCheck2,
   Settings2,
@@ -22,6 +19,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { Link } from "react-router-dom";
+import { fetchUserToken, User } from "../utils";
 
 interface SidebarProps {
   active: string;
@@ -29,14 +27,26 @@ interface SidebarProps {
 
 export default function Sidebar({ active }: SidebarProps) {
   const [expanded, setExpanded] = useState(true);
+  const [userData, setUserData] = useState<User>();
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const username = "dsm_professor";
-  const avatar =
-    "https://i.pinimg.com/736x/b1/5a/34/b15a34ae7890d75945ba1df15ca9da5f.jpg";
+  const username = userData?.dados.username || "";
+  const email = userData?.dados.email || "";
+  const avatar = userData?.dados.avatar || "";
 
   useEffect(() => {
     const test_mobile: boolean = window.innerWidth < 768;
     setExpanded(!test_mobile);
+  }, []);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const response: User = await fetchUserToken();
+
+      setUserData(response);
+      setIsAdmin(response.dados.role === "ADMIN");
+    }
+    fetchUser();
   }, []);
 
   return (
@@ -47,7 +57,7 @@ export default function Sidebar({ active }: SidebarProps) {
       )}
     >
       <div className="flex flex-col h-full">
-        <div className="flex justify-between items-center p-4">
+        <div className="flex items-center justify-between p-4">
           <h2
             className={cn(
               "text-lg font-semibold tracking-tight transition-all duration-300",
@@ -65,7 +75,7 @@ export default function Sidebar({ active }: SidebarProps) {
             )}
             onClick={() => setExpanded((curr) => !curr)}
           >
-            <PanelLeft className="h-4 w-4" />
+            <PanelLeft className="w-4 h-4" />
           </Button>
         </div>
         <ScrollArea className="flex-grow px-3">
@@ -84,24 +94,27 @@ export default function Sidebar({ active }: SidebarProps) {
               />
             ))}
 
-            <div className={cn("", !expanded && "hidden")}>
-              <Separator className={cn("my-2", !expanded && "my-2")} />
-            </div>
+            {isAdmin && (
+              <div className={cn("", !expanded && "hidden")}>
+                <Separator className={cn("my-2", !expanded && "my-2")} />
+              </div>
+            )}
 
-            {sidebar_items.admin.map((item) => (
-              <SidebarItem
-                active={active}
-                key={item.title}
-                item={item}
-                expanded={expanded}
-              />
-            ))}
+            {isAdmin &&
+              sidebar_items.admin.map((item) => (
+                <SidebarItem
+                  active={active}
+                  key={item.title}
+                  item={item}
+                  expanded={expanded}
+                />
+              ))}
           </div>
         </ScrollArea>
 
         <SidebarFooter
-          name={"John Doe"}
-          email="dsm_professor@fatec.sp.gov.br"
+          name={username}
+          email={email}
           expanded={expanded}
           avatar={avatar}
           username={username}
@@ -147,7 +160,7 @@ function SidebarItem({
               />
             )}
             {!expanded && (
-              <span className="absolute left-full rounded-md px-2 py-1 ml-6 bg-accent text-accent-foreground text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
+              <span className="absolute invisible px-2 py-1 ml-6 text-sm transition-all -translate-x-3 rounded-md left-full bg-accent text-accent-foreground opacity-20 group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
                 {item.title}
               </span>
             )}
@@ -184,26 +197,14 @@ interface SidebarItems {
 const sidebar_items: SidebarItems = {
   default: [
     {
-      title: "Geral",
-      icon: <LayoutDashboard className="h-4 w-4" />,
-      alert: false,
-      href: "geral",
-    },
-    {
-      title: "Atividade",
-      icon: <User2 className="h-4 w-4" />,
+      title: "Atividade do Usuário",
+      icon: <User2 className="w-4 h-4" />,
       alert: false,
       href: "atividade",
     },
     {
-      title: "Conta",
-      icon: <Settings2 className="h-4 w-4" />,
-      alert: false,
-      href: "conta",
-    },
-    {
-      title: "Configurações",
-      icon: <Settings className="h-4 w-4" />,
+      title: "Configurações da Conta",
+      icon: <Settings2 className="w-4 h-4" />,
       alert: false,
       href: "configuracoes",
     },
@@ -222,16 +223,10 @@ const sidebar_items: SidebarItems = {
       href: "gerenciamento-de-usuarios",
     },
     {
-      title: "Mensagens aprovadas",
-      icon: <MessageSquare className="h-4 w-4" />,
-      alert: true,
-      href: "mensagens-aprovadas",
-    },
-    {
-      title: "Conteudo Reportado",
-      icon: <AlertTriangle className="h-4 w-4" />,
-      alert: true,
-      href: "conteudo-reportado",
+      title: "Gerenciamento de Threads",
+      icon: <MessageSquare className="w-4 h-4" />,
+      alert: false,
+      href: "gerenciamento-de-threads",
     },
   ],
 };

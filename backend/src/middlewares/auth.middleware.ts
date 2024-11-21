@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
-import * as jose from 'jose';
-import dotenv from 'dotenv';
+import { Request, Response, NextFunction } from "express";
+import * as jose from "jose";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-declare module 'express-serve-static-core' {
+declare module "express-serve-static-core" {
   interface Request {
     user?: jose.JWTPayload;
   }
@@ -13,15 +13,16 @@ declare module 'express-serve-static-core' {
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization;
   if (!token) {
-    throw Error('Token not found');
+    throw Error("Token not found");
     // return res.status(401).json({ message: 'token not found' });
   }
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const data = await jose.jwtVerify(token, secret);
+
     if (!data) {
-      throw Error('Token not found');
+      throw Error("Token not found");
       // return res.status(401).json({ message: 'invalid token' });
     }
 

@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { HelpCircle, HomeIcon, LogOut } from "lucide-react";
+import { HomeIcon, LogOut } from "lucide-react";
 
 interface SidebarFooterProps {
   expanded: boolean;
@@ -28,7 +28,7 @@ export default function SidebarFooter({
   email,
 }: SidebarFooterProps) {
   return (
-    <div className="absolute bottom-4 left-0 right-0 px-3 flex flex-col gap-2 justify-center items-center">
+    <div className="absolute left-0 right-0 flex flex-col items-center justify-center gap-2 px-3 bottom-4">
       <div
         className={cn(
           "flex w-full items-center gap-3 rounded-lg bg-secondary px-3 py-2",
@@ -46,7 +46,7 @@ export default function SidebarFooter({
           )}
         >
           <span className="text-sm font-medium">{name}</span>
-          <span className="text-xs text-muted-foreground truncate">
+          <span className="text-xs truncate text-muted-foreground">
             {email}
           </span>
         </div>
@@ -66,7 +66,7 @@ export default function SidebarFooter({
                 size="icon"
                 onClick={() => (window.location.href = "/")}
               >
-                <HomeIcon className="h-4 w-4" />
+                <HomeIcon className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent className="bg-muted text-foreground">
@@ -79,20 +79,7 @@ export default function SidebarFooter({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" onClick={() => {}}>
-                <HelpCircle className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent className="bg-muted text-foreground">
-              <p>Ajuda</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={() => {}}>
-                <LogOut className="h-4 w-4" />
+                <LogOut className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
             <TooltipContent className="bg-muted text-foreground">

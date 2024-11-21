@@ -44,25 +44,27 @@ interface Notification {
 
 interface NavMenuProps {
   variant?: "default" | "mobile";
-  notifications: Notification[];
+  notifications?: Notification[];
   logged: boolean;
+  admin: boolean;
 }
 
 export function NavMenu({
   variant,
   notifications,
   logged: userLogged,
+  admin,
 }: NavMenuProps) {
   if (variant === "mobile") {
     return (
-      <div className="flex flex-col justify-between items-center h-full">
+      <div className="flex flex-col items-center justify-between h-full">
         <div className="flex flex-col gap-2">
           <Link to="/">
             <Button variant="ghost">O Curso</Button>
           </Link>
-          {sections.map((item) => {
+          {sections.map((item, index: number) => {
             return (
-              <Link to={item.action} className="ml-4">
+              <Link key={index} to={item.action} className="ml-4">
                 <Button variant="ghost">{item.title}</Button>
               </Link>
             );
@@ -72,24 +74,32 @@ export function NavMenu({
             <Button variant="ghost">Fórum</Button>
           </Link>
 
-          {userLogged && (
-            <Link to="/login">
+          {admin ? (
+            <Link to="/dashboard">
               <Button variant="ghost" className="flex gap-2">
                 Dashboard
               </Button>
             </Link>
-          )}
+          ) : userLogged ? (
+            <Link to="/dashboard">
+              <Button variant="ghost" size="icon">
+                <User2 className="lg:h-4 lg:w-4" />
+              </Button>
+            </Link>
+          ) : null}
         </div>
-        <div className="w-3/4 flex flex-col-reverse justify-between items-center gap-2">
+        <div className="flex flex-col-reverse items-center justify-between w-3/4 gap-2">
           <img src="/logo.png" className="w-1/2" />
-          <div className="w-full flex justify-center gap-4">
+          <div className="flex justify-center w-full gap-4">
             <Link to="/login">
               <Button variant="ghost" size="icon">
                 <User2 className="lg:h-4 lg:w-4" />
               </Button>
             </Link>
             <ModeToggle />
-            <NavbarNotifications notifications={notifications} />
+            {notifications && (
+              <NavbarNotifications notifications={notifications} />
+            )}
           </div>
         </div>
       </div>
@@ -103,14 +113,14 @@ export function NavMenu({
             <NavigationMenuTrigger>O Curso</NavigationMenuTrigger>
             <NavigationMenuContent>
               <div className="flex flex-col gap-2 w-[400px] p-2">
-                {sections.map((item) => {
+                {sections.map((item, index: number) => {
                   return (
-                    <Link to={item.action}>
-                      <NavigationMenuLink className="w-full p-2 hover:bg-muted rounded-sm cursor-pointer flex flex-col gap-1">
+                    <Link key={index} to={item.action}>
+                      <NavigationMenuLink className="flex flex-col w-full gap-1 p-2 rounded-sm cursor-pointer hover:bg-muted">
                         <h1 className="text-sm font-medium leading-none">
                           {item.title}
                         </h1>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        <p className="text-sm leading-snug line-clamp-2 text-muted-foreground">
                           {item.description}
                         </p>
                       </NavigationMenuLink>
@@ -127,13 +137,19 @@ export function NavMenu({
         <Button variant="ghost">Fórum</Button>
       </Link>
 
-      {userLogged && (
-        <Link to="/login">
+      {admin ? (
+        <Link to="/dashboard">
           <Button variant="ghost" className="flex gap-2">
             Dashboard
           </Button>
         </Link>
-      )}
+      ) : userLogged ? (
+        <Link to="/dashboard">
+          <Button variant="ghost" size="icon">
+            <User2 className="lg:h-4 lg:w-4" />
+          </Button>
+        </Link>
+      ) : null}
     </div>
   );
 }

@@ -28,10 +28,13 @@ export default function GerenciamentoDeUsuarios() {
     setError(null);
 
     try {
+      const authToken = localStorage.getItem("auth-token") || "";
+
       const response = await fetch(`${API_URL}/api/users/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `${authToken}`,
         },
       });
 
@@ -68,7 +71,7 @@ export default function GerenciamentoDeUsuarios() {
       <div className="w-full">
         {error && (
           <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+            className="relative px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded"
             role="alert"
           >
             <strong className="font-bold">Error: </strong>
@@ -77,8 +80,8 @@ export default function GerenciamentoDeUsuarios() {
         )}
 
         {isLoading ? (
-          <div className="flex justify-center items-center py-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          <div className="flex items-center justify-center py-4">
+            <div className="w-8 h-8 border-b-2 border-gray-900 rounded-full animate-spin"></div>
           </div>
         ) : (
           <>
@@ -90,7 +93,7 @@ export default function GerenciamentoDeUsuarios() {
                 className="max-w-sm"
               />
             </div>
-            <div className="rounded-md border">
+            <div className="border rounded-md">
               <DashboardTable
                 columnFilters={columnFilters}
                 setColumnFilters={setColumnFilters}
@@ -99,7 +102,7 @@ export default function GerenciamentoDeUsuarios() {
               />
             </div>
 
-            <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex items-center justify-end py-4 space-x-2">
               <DashboardPagination
                 users={users}
                 pageIndex={pageIndex}

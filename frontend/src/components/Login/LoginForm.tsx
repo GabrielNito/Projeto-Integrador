@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import PasswordInput from "@/components/Login/PasswordInput";
+import { API_URL } from "../utils";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -35,13 +36,41 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "Login attempt",
-      description: `Email: ${values.email}`,
-    });
-    // Here you would typically send the login data to your server
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch(`${API_URL}/api/login/authenticate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Usuário logado com sucesso",
+        });
+        const result = await response.json();
+
+        localStorage.setItem("auth-token", result);
+      } else {
+        toast({
+          title: "Error fetching API",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        title: "Error",
+        description: `Error: ${error}`,
+        variant: "destructive",
+      });
+    }
   }
 
   return (

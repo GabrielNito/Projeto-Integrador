@@ -15,43 +15,68 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import PasswordInput from "@/components/Login/PasswordInput";
+import { API_URL } from "../utils";
 
-const formSchema = z
-  .object({
-    name: z.string().min(2, {
-      message: "O campo nome precisa de pelo menos 2 caracteres",
-    }),
-    email: z.string().email({
+const formSchema = z.object({
+  username: z.string().min(2, {
+    message: "O campo nome precisa de pelo menos 2 caracteres",
+  }),
+  email: z
+    .string()
+    .email({
       message: "Insira um email válido.",
+    })
+    .refine((email) => email.endsWith("@fatec.sp.gov.br"), {
+      message: "Email must belong to the @fatec.sp.gov.br domain.",
     }),
-    password: z.string().min(8, {
-      message: "A senha precisa ter pelo menos 8 caracteres.",
-    }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não coincidem",
-    path: ["confirmPassword"],
-  });
+  password: z.string().min(8, {
+    message: "A senha precisa ter pelo menos 8 caracteres.",
+  }),
+});
 
-export default function SignInForm() {
+export default function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      username: "",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "Sign In attempt",
-      description: `Email: ${values.email}`,
-    });
-    // Here you would typically send the login data to your server
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch(`${API_URL}/api/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+
+      const data = await response.json();
+
+      toast({
+        title: "Login Successful",
+        description: data.message,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Login Error",
+        description: `${error}`,
+        variant: "destructive",
+      });
+    }
   }
 
   return (
@@ -59,7 +84,7 @@ export default function SignInForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="name"
+          name="username"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nome</FormLabel>
@@ -77,7 +102,7 @@ export default function SignInForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="email@exemplo.com" {...field} />
+                <Input placeholder="email@fatec.sp.gov.br" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -96,21 +121,8 @@ export default function SignInForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Confirmar Senha</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder="********" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button type="submit" variant="secondary">
-          Cadastrar
+          Entrar
         </Button>
       </form>
     </Form>

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 export default function Atividade() {
   useEffect(() => {
-    document.title = "Atividade - DSM";
+    document.title = "Atividade do Usuário - DSM";
   }, []);
-  return <DashboardTitle title="Atividade" />;
+  return <DashboardTitle title="Atividade do Usuário" />;
 }

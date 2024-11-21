@@ -4,8 +4,9 @@ import { NavMenu } from "./NavMenu";
 import { Separator } from "../ui/separator";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Badge, LucideIcon, Menu, MessagesSquare } from "lucide-react";
-import NavbarNotifications from "./NavbarNotifications";
 import { Link } from "react-router-dom";
+import { fetchUserToken, User } from "../utils";
+import NavbarNotifications from "./NavbarNotifications";
 
 interface Notification {
   title: string;
@@ -14,7 +15,7 @@ interface Notification {
   icon: LucideIcon;
 }
 
-const test = [
+const test: Notification[] = [
   {
     title: "Inscrições Abertas para o Vestibular da FATEC",
     description:
@@ -32,17 +33,22 @@ const test = [
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [userLogged, setUserLogged] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    setNotifications(test);
-    setUserLogged(true);
+    async function fetchUser() {
+      const response: User = await fetchUserToken();
+
+      setUserLogged(response.logado);
+      setIsAdmin(response.admin);
+    }
+    fetchUser();
   }, []);
 
   return (
     <>
-      <nav className="flex justify-between items-center px-12 py-2 max-md:px-4 ">
+      <nav className="flex items-center justify-between px-12 py-2 max-md:px-4 ">
         <Link to="/">
           <img
             src="/logo.svg"
@@ -60,16 +66,17 @@ export default function Navbar() {
 
           <SheetContent className="ml-12 py-12 bg-[hsl(var(--background))]">
             <NavMenu
+              admin={isAdmin}
+              notifications={test}
               logged={userLogged}
               variant="mobile"
-              notifications={notifications}
             />
           </SheetContent>
         </Sheet>
 
-        <div className="max-md:hidden flex gap-2">
-          <NavMenu logged={userLogged} notifications={notifications} />
-          <NavbarNotifications notifications={notifications} />
+        <div className="flex gap-2 max-md:hidden">
+          <NavMenu admin={isAdmin} logged={userLogged} />
+          <NavbarNotifications notifications={test} />
           <ModeToggle />
         </div>
       </nav>
