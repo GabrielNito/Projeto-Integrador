@@ -1,8 +1,8 @@
-import { JWTPayload } from 'jose';
-import { UsersService } from '../Services/Users.service';
-import { Request, Response, NextFunction } from 'express';
+import { JWTPayload } from "jose";
+import { UsersService } from "../Services/Users.service";
+import { Request, Response, NextFunction } from "express";
 
-declare module 'express-serve-static-core' {
+declare module "express-serve-static-core" {
   interface Request {
     user?: JWTPayload;
   }
@@ -17,7 +17,7 @@ export class UsersController {
   getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await this._usersService.getAllUsers(req);
-      res.status(200).json({ message: 'Success', data });
+      res.status(200).json({ message: "Success", data });
     } catch (error) {
       next(error);
     }
@@ -27,7 +27,7 @@ export class UsersController {
     try {
       const id = Number(req.params.id);
       const data = await this._usersService.getUserById(id, req);
-      res.status(200).json({ message: 'Success', data });
+      res.status(200).json({ message: "Success", data });
     } catch (error) {
       next(error);
     }
@@ -36,7 +36,9 @@ export class UsersController {
   createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const createdUser = await this._usersService.createUser(req.body);
-      res.status(201).json({ message: 'User created successfully', data: createdUser });
+      res
+        .status(201)
+        .json({ message: "User created successfully", data: createdUser });
     } catch (error) {
       next(error);
     }
@@ -47,7 +49,9 @@ export class UsersController {
 
     try {
       const updatedUser = await this._usersService.updateUser(req.body);
-      res.status(201).json({ message: 'User updated successfully', data: updatedUser });
+      res
+        .status(201)
+        .json({ message: "User updated successfully", data: updatedUser });
     } catch (error) {
       next(error);
     }
@@ -56,7 +60,7 @@ export class UsersController {
   deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       await this._usersService.deleteUser(req);
-      res.status(202).json({ message: 'User deleted successfully' });
+      res.status(202).json({ message: "User deleted successfully" });
     } catch (error) {
       next(error);
     }

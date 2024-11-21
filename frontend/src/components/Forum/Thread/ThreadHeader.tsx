@@ -8,56 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Heart, MessageSquare } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
-
-interface Post {
-  id: number;
-  content: string;
-  likes: number;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
-  threadId: number;
-}
-
-interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  role: "STUDENT" | "ADMIN";
-  createAt: string;
-  updateAt: string;
-  likedPosts: string;
-  likedThreads: string;
-  avatar: string | null;
-  badges: string;
-}
-
-interface Thread {
-  id: number;
-  title: string;
-  likes: number;
-  isClosed: boolean;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
-  posts: Post[];
-  user: User;
-}
+import { ThreadType } from "../types";
+import { badgeStyles } from "@/utils/global.types";
 
 interface ThreadHeaderProps {
-  thread: Thread;
+  thread: ThreadType;
   setLikes: Dispatch<SetStateAction<number>>;
 }
-
-const badgeStyles: { [key: string]: string } = {
-  ADMIN: "bg-red-500 hover:bg-red-400 text-white",
-  STUDENT: "bg-blue-500 hover:bg-blue-400 text-white",
-  MODERATOR: "bg-blue-500 hover:bg-blue-400 text-white",
-  USER: "bg-gray-400 hover:bg-gray-300 text-black",
-};
 
 export default function ThreadHeader({ thread, setLikes }: ThreadHeaderProps) {
   const handleLike = () => {
@@ -94,10 +53,6 @@ export default function ThreadHeader({ thread, setLikes }: ThreadHeaderProps) {
         <Button variant="ghost" size="sm" onClick={handleLike}>
           <Heart className="w-4 h-4 mr-2" />
           {thread.likes}
-        </Button>
-        <Button variant="ghost" size="sm">
-          <MessageSquare className="w-4 h-4 mr-2" />
-          {thread?.posts.length}
         </Button>
       </CardFooter>
     </Card>

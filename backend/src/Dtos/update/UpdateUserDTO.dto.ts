@@ -5,11 +5,11 @@ import {
   IsEnum,
   IsNumber,
   IsInt,
-} from 'class-validator';
+} from "class-validator";
 
 enum Role {
-  'Administrator',
-  'Student',
+  "ADMIN",
+  "STUDENT",
 }
 
 export class UpdateUserDTO {

@@ -1,6 +1,6 @@
-import * as jose from 'jose';
-import bcrypt from 'bcrypt';
-import { UsersService } from './Users.service';
+import * as jose from "jose";
+import bcrypt from "bcrypt";
+import { UsersService } from "./Users.service";
 
 export class LoginService {
   private _userService = new UsersService();
@@ -9,16 +9,16 @@ export class LoginService {
     const user = await this._userService.getUserByEmail(email);
 
     if (!user) {
-      throw Error('User not found');
+      throw Error("User not found");
     }
 
     if (!user.password) {
-      throw Error('Invalid password');
+      throw Error("Invalid password");
     }
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
-      throw Error('Invalid passoword');
+      throw Error("Invalid passoword");
     }
 
     const payload = {
@@ -30,14 +30,14 @@ export class LoginService {
     };
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-    const alg = 'HS256';
+    const alg = "HS256";
 
     const token = await new jose.SignJWT(payload)
       .setProtectedHeader({ alg })
-      .setExpirationTime('30d')
+      .setExpirationTime("30d")
       .setIssuedAt()
-      .setIssuer('localhost://3001')
-      .setSubject('user')
+      .setIssuer("localhost://3001")
+      .setSubject("user")
       .sign(secret);
 
     return token;
@@ -48,24 +48,26 @@ export class LoginService {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
       const { payload } = await jose.jwtVerify(token, secret, {
-        issuer: 'localhost://3001',
-        subject: 'user',
+        issuer: "localhost://3001",
+        subject: "user",
       });
 
-      const user = await this._userService.getUserByIdForAuthenticateToken(Number(payload.id));
+      const user = await this._userService.getUserByIdForAuthenticateToken(
+        Number(payload.id)
+      );
       if (!user) {
-        throw new Error('Usuário não encontrado');
+        throw new Error("Usuário não encontrado");
       }
 
       const data = {
         logado: true,
-        admin: user.role === 'Administrator',
-        dados: user
+        admin: user.role === "ADMIN",
+        dados: user,
       };
 
       return data;
     } catch (error) {
-      throw new Error('Token inválido ou expirado');
+      throw new Error("Token inválido ou expirado");
     }
   }
 }
