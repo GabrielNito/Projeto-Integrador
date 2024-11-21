@@ -7,7 +7,6 @@ import { fetchUserToken, User } from "@/components/utils";
 
 export default function Conta() {
   const [userData, setUserData] = useState<User>();
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     document.title = "Configurações da Conta - DSM";
@@ -17,7 +16,6 @@ export default function Conta() {
 
       console.log(response);
       setUserData(response);
-      setIsAdmin(response.dados.role === "ADMIN");
     }
 
     fetchUser();

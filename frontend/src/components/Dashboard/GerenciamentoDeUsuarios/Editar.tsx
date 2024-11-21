@@ -26,17 +26,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { User } from "./utils";
+import { API_URL } from "@/components/utils";
+import { toast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  email: z.string().email({
-    message: "Please enter a valid email.",
-  }),
   role: z.string(),
-  avatar: z.string().nullable(),
-  badges: z.string().optional(),
 });
 
 interface EditarProps {
@@ -44,29 +41,46 @@ interface EditarProps {
 }
 
 export default function Editar({ user }: EditarProps) {
-  console.log(user);
-
-  const { badges } = user;
-  let parsedBadges;
-  try {
-    parsedBadges = JSON.parse(badges);
-  } catch (e) {
-    console.log(e);
-  }
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: user.username,
-      email: user.email,
       role: user.role,
-      avatar: user.avatar,
-      badges: parsedBadges ? parsedBadges : user,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    async function fetchUsers() {
+      try {
+        const authToken = localStorage.getItem("auth-token") || "";
+
+        const response = await fetch(`${API_URL}/api/users/${user.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: authToken,
+          },
+          body: JSON.stringify({
+            id: user.id,
+            ...values,
+          }),
+        });
+
+        const result: { message: string; data: any } = await response.json();
+
+        if (result.message === "User updated successfully") {
+          toast({
+            title: "Dados alterados com sucesso",
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Erro ao fazer update dos dados usuário",
+          variant: "destructive",
+        });
+      }
+    }
+    fetchUsers();
   }
 
   return (
@@ -97,19 +111,6 @@ export default function Editar({ user }: EditarProps) {
             />
             <FormField
               control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="role"
               render={({ field }) => (
                 <FormItem>
@@ -129,32 +130,6 @@ export default function Editar({ user }: EditarProps) {
                       <SelectItem value="STUDENT">Student</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="avatar"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Avatar URL</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="badges"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Badges</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

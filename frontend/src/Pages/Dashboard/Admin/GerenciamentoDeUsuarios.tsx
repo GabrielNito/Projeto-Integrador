@@ -7,6 +7,7 @@ import DashboardPagination from "@/components/Dashboard/GerenciamentoDeUsuarios/
 import DashboardTable from "@/components/Dashboard/GerenciamentoDeUsuarios/DashboardTable";
 import AvisoMobile from "@/components/Dashboard/GerenciamentoDeUsuarios/AvisoMobile";
 import { Input } from "@/components/ui/input";
+import { Toaster } from "@/components/ui/toaster";
 
 const API_URL = import.meta.env.VITE_FETCH_URL || "http://localhost:3001";
 
@@ -34,7 +35,7 @@ export default function GerenciamentoDeUsuarios() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${authToken}`,
+          Authorization: authToken,
         },
       });
 
@@ -112,6 +113,7 @@ export default function GerenciamentoDeUsuarios() {
           </>
         )}
       </div>
+      <Toaster />
     </>
   );
 }

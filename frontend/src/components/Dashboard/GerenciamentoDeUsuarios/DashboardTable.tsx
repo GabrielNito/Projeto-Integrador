@@ -65,7 +65,7 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const user = row.original;
       return (
-        <Avatar className="h-10 w-10">
+        <Avatar className="w-10 h-10">
           <AvatarImage src={user.avatar || ""} alt={user.username} />
           <AvatarFallback>
             {user.username.slice(0, 2).toUpperCase()}
@@ -83,7 +83,7 @@ export const columns: ColumnDef<User>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Username
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
@@ -106,9 +106,11 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const badges = row.original.badges;
 
+      console.log(badges);
+
       return badges && badges.length > 0 ? (
         <div className="flex gap-2">
-          {JSON.parse(badges) ? (
+          {badges ? (
             <span className="text-muted-foreground">-</span>
           ) : (
             JSON.parse(badges).map((badge: string, index: number) => (
@@ -132,7 +134,7 @@ export const columns: ColumnDef<User>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Posts
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="w-4 h-4 ml-2" />
         </Button>
       );
     },
