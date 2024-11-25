@@ -12,6 +12,7 @@ import ThreadPostLoading from "./ThreadPostLoading";
 import ThreadPostError from "./ThreadPostError";
 import { badgeStyles } from "@/utils/global.types";
 import ThreadPostLike from "./ThreadPostLike";
+import { authToken, fetchUserToken, User } from "@/components/utils";
 
 interface Response {
   message: string;
@@ -25,6 +26,7 @@ interface ThreadPostProps {
 export default function ThreadPost({ post }: ThreadPostProps) {
   const [user, setUser] = useState<UserDataType>();
   const [error, setError] = useState<string | null>(null);
+  const [userLikes, setUserLikes] = useState("");
 
   async function fetchUser() {
     setError(null);
@@ -34,6 +36,7 @@ export default function ThreadPost({ post }: ThreadPostProps) {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: authToken,
         },
       });
 
@@ -49,6 +52,13 @@ export default function ThreadPost({ post }: ThreadPostProps) {
 
   useEffect(() => {
     fetchUser();
+
+    async function fetchLocal() {
+      const response: User = await fetchUserToken();
+
+      setUserLikes(response.dados.likedPosts);
+    }
+    fetchLocal();
   }, []);
 
   if (!user) {
@@ -86,7 +96,7 @@ export default function ThreadPost({ post }: ThreadPostProps) {
           <p>{post.content}</p>
         </CardContent>
         <CardFooter>
-          <ThreadPostLike post={post} />
+          <ThreadPostLike post={post} likedPosts={userLikes} />
         </CardFooter>
       </Card>
     );

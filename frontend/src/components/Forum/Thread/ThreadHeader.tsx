@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,21 +7,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Heart } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
 import { ThreadType } from "../types";
 import { badgeStyles } from "@/utils/global.types";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { MessageCircle } from "lucide-react";
 
 interface ThreadHeaderProps {
   thread: ThreadType;
-  setLikes: Dispatch<SetStateAction<number>>;
 }
 
-export default function ThreadHeader({ thread, setLikes }: ThreadHeaderProps) {
-  const handleLike = () => {
-    setLikes(thread.likes + 1);
-  };
-
+export default function ThreadHeader({ thread }: ThreadHeaderProps) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -49,10 +44,12 @@ export default function ThreadHeader({ thread, setLikes }: ThreadHeaderProps) {
       <CardContent>
         <CardTitle className="mb-4">{thread?.title}</CardTitle>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="ghost" size="sm" onClick={handleLike}>
-          <Heart className="w-4 h-4 mr-2" />
-          {thread.likes}
+      <CardFooter>
+        <Button variant="outline" className="flex items-center gap-1" asChild>
+          <Link to={`/forum/${thread.id}/answer`}>
+            <MessageCircle className="w-4 h-4" />
+            Responder esta Thread
+          </Link>
         </Button>
       </CardFooter>
     </Card>

@@ -1,6 +1,8 @@
 export const API_URL =
   import.meta.env.VITE_FETCH_URL || "http://localhost:3001";
 
+export const authToken = localStorage.getItem("auth-token") || "";
+
 export async function fetchUserToken(): Promise<User> {
   try {
     const response = await fetch(
@@ -30,6 +32,21 @@ export async function fetchUserToken(): Promise<User> {
       ? error
       : new Error("An unknown error occurred");
   }
+}
+
+export function toggleLike(numbersStr: string, value: number): string {
+  const numbers = numbersStr ? JSON.parse(numbersStr) : [];
+
+  const index = numbers.indexOf(value);
+
+  if (index === -1) {
+    return JSON.stringify([...numbers, value]);
+  }
+
+  return JSON.stringify([
+    ...numbers.slice(0, index),
+    ...numbers.slice(index + 1),
+  ]);
 }
 
 interface UserData {

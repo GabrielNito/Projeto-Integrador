@@ -4,11 +4,22 @@ import ThreadCardLoading from "../../components/Forum/Threads/ThreadCardLoading"
 import ThreadCardError from "../../components/Forum/Threads/ThreadCardError";
 import ThreadCard from "../../components/Forum/Threads/ThreadCard";
 import { API_URL, ResponseThreads, ThreadType } from "@/components/Forum/types";
+import { fetchUserToken } from "@/components/utils";
 
 export default function Forum() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [threads, setThreads] = useState<ThreadType[]>([]);
+  const [likedThreads, setLikedThreads] = useState<number[]>([]);
+
+  async function fetchUser() {
+    const localUser = await fetchUserToken();
+
+    const likedThreadsArray = localUser.dados.likedThreads
+      ? JSON.parse(localUser.dados.likedThreads)
+      : [];
+    setLikedThreads(likedThreadsArray);
+  }
 
   async function fetchThreads() {
     setIsLoading(true);
@@ -37,6 +48,8 @@ export default function Forum() {
   useEffect(() => {
     fetchThreads();
 
+    fetchUser();
+
     document.title = "Fórum - DSM";
   }, []);
 
@@ -53,9 +66,15 @@ export default function Forum() {
           dúvidas, experiências, dicas e colabore com a comunidade
         </h2>
 
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
           {threads.map((thread) => {
-            return <ThreadCard thread={thread} key={thread.id} />;
+            return (
+              <ThreadCard
+                thread={thread}
+                likedThreads={likedThreads}
+                key={thread.id}
+              />
+            );
           })}
 
           {isLoading && <ThreadCardLoading />}

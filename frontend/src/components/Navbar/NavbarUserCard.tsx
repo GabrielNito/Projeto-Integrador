@@ -7,9 +7,9 @@ import {
 } from "../ui/hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Separator } from "../ui/separator";
-import { roleStyles } from "@/utils/global.types";
 import { Badge } from "../ui/badge";
 import { Link } from "react-router-dom";
+import { badgeStyles } from "@/utils/global.types";
 
 export interface UserType {
   id: number;
@@ -92,7 +92,7 @@ export default function NavbarUserCard({ notLogged }: NavbarUserCardProps) {
             <div className="flex flex-col gap-1">
               <h4 className="text-sm font-semibold">{user.username}</h4>
               <p className="text-sm text-muted-foreground">{user.email}</p>
-              <Badge className={`w-fit ${user && roleStyles[user.role]}`}>
+              <Badge className={`w-fit ${user && badgeStyles[user.role]}`}>
                 {user?.role}
               </Badge>
             </div>

@@ -48,10 +48,8 @@ export default function Thread() {
     <div>
       <Navbar />
 
-      <section className="max-lg:p-4 lg:w-1/2 lg:mx-auto lg:p-12 flex flex-col gap-4">
-        {currentThread && (
-          <ThreadHeader thread={currentThread} setLikes={setLikes} />
-        )}
+      <section className="flex flex-col gap-4 max-lg:p-4 lg:w-1/2 lg:mx-auto lg:p-12">
+        {currentThread && <ThreadHeader thread={currentThread} />}
 
         {currentThread?.posts.map((post, index) => {
           return <ThreadPost post={post} key={index} />;

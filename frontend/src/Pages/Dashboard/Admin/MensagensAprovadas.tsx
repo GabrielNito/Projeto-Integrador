@@ -7,8 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { Check, X, ArrowRight } from "lucide-react";
 import DashboardTitle from "@/components/Dashboard/DashboardTitle";
 import { useToast } from "@/hooks/use-toast";
-// import ThreadPostUser from "@/components/Forum/ThreadPostUser";
-// import ThreadPostContent from "@/components/Forum/ThreadPostContent";
 
 interface ThreadData {
   threadId: number;
@@ -110,23 +108,23 @@ export default function MensagensAprovadas() {
   return (
     <>
       <DashboardTitle title="Mensagens Aprovadas" />
-      <div className="container mx-auto p-6">
+      <div className="container p-6 mx-auto">
         <Card>
           <CardContent>
-            <div className="flex justify-between mb-4 py-6">
+            <div className="flex justify-between py-6 mb-4">
               <Button
                 onClick={handleApproveThreads}
                 disabled={selectedThreads.length === 0}
                 className="bg-green-600 hover:bg-green-700"
               >
-                <Check className="mr-2 h-4 w-4" /> Approve Selected
+                <Check className="w-4 h-4 mr-2" /> Approve Selected
               </Button>
               <Button
                 onClick={handleRejectThreads}
                 disabled={selectedThreads.length === 0}
                 variant="destructive"
               >
-                <X className="mr-2 h-4 w-4" /> Reject Selected
+                <X className="w-4 h-4 mr-2" /> Reject Selected
               </Button>
             </div>
             <ScrollArea className="h-[600px] rounded-md border p-4">
@@ -153,19 +151,19 @@ export default function MensagensAprovadas() {
                       variant="outline"
                       size="sm"
                     >
-                      Go to Thread <ArrowRight className="ml-2 h-4 w-4" />
+                      Go to Thread <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
                   <Card className="md:w-full bg-[var(--background)] border-border_gradient">
                     <CardContent className="p-0">
                       <div className="flex max-md:flex-col-reverse">
-                        <ThreadPostUser
+                        {/* <ThreadPostUser
                           avatar={thread.posts[0].avatar}
                           username={thread.posts[0].username}
                           badges={thread.posts[0].badges}
                           likes={thread.posts[0].likes}
                           date={thread.posts[0].date}
-                        />
+                        /> */}
 
                         <Separator
                           orientation="vertical"
@@ -176,9 +174,9 @@ export default function MensagensAprovadas() {
                           className="md:hidden"
                         />
 
-                        <ThreadPostContent
+                        {/* <ThreadPostContent
                           description={thread.posts[0].description}
-                        />
+                        /> */}
                       </div>
                     </CardContent>
                   </Card>

@@ -18,6 +18,8 @@ import RecuperacaoSenha from "./Pages/Login/RecuperacaoSenha";
 import Thread from "./Pages/Threads/Thread";
 import Forum from "./Pages/Threads/Threads";
 import Conta from "./Pages/Dashboard/Conta";
+import CreateThread from "./Pages/Threads/CreateThread";
+import CommentThread from "./Pages/Threads/CommentThread";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
   {
     path: "/forum",
     element: <Forum />,
+  },
+  {
+    path: "/forum/create-thread",
+    element: <CreateThread />,
+  },
+  {
+    path: "/forum/:threadId/answer",
+    element: <CommentThread />,
   },
   {
     path: "/forum/:id",

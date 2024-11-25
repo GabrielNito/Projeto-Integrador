@@ -16,22 +16,9 @@ import {
 
 const sections = [
   {
-    title: "Sobre o curso",
-    description:
-      "Esta seção contém informações sobre o curso e o que ele oferece.",
-    action: "/",
-  },
-  {
-    title: "Certificações e Diplomas",
-    description:
-      "Veja as certificações e diplomas que você pode obter ao concluir o curso.",
-    action: "/certificacoes-e-diplomas",
-  },
-  {
-    title: "Contato",
-    description:
-      "Entre em contato conosco para mais informações sobre o curso.",
-    action: "/contato",
+    title: "Criar uma nova Thread",
+    description: "Poste uma nova Thread em nosso fórum.",
+    action: "/forum/create-thread",
   },
 ];
 
@@ -59,8 +46,12 @@ export function NavMenu({
     return (
       <div className="flex flex-col items-center justify-between h-full">
         <div className="flex flex-col gap-2">
-          <Link to="/">
+          <Link to="/forum">
             <Button variant="ghost">O Curso</Button>
+          </Link>
+
+          <Link to="/">
+            <Button variant="ghost">Fórum</Button>
           </Link>
           {sections.map((item, index: number) => {
             return (
@@ -69,10 +60,6 @@ export function NavMenu({
               </Link>
             );
           })}
-
-          <Link to="/forum">
-            <Button variant="ghost">Fórum</Button>
-          </Link>
 
           {admin ? (
             <Link to="/dashboard">
@@ -107,10 +94,13 @@ export function NavMenu({
   }
   return (
     <div className="flex gap-2">
+      <Link to="/forum">
+        <Button variant="ghost">O Curso</Button>
+      </Link>
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>O Curso</NavigationMenuTrigger>
+            <NavigationMenuTrigger>Fórum</NavigationMenuTrigger>
             <NavigationMenuContent>
               <div className="flex flex-col gap-2 w-[400px] p-2">
                 {sections.map((item, index: number) => {
@@ -132,10 +122,6 @@ export function NavMenu({
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-
-      <Link to="/forum">
-        <Button variant="ghost">Fórum</Button>
-      </Link>
 
       {admin ? (
         <Link to="/dashboard">

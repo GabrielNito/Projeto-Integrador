@@ -1,50 +1,91 @@
 import { Button } from "@/components/ui/button";
 import { HeartIcon } from "lucide-react";
-import { PostType } from "../types";
-import { useState } from "react";
+import { API_URL, PostType, ResponseThread } from "../types";
+import { useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  authToken,
+  fetchUserToken,
+  toggleLike,
+  User,
+} from "@/components/utils";
 
-interface ThreadPostLikeProps {
+interface ThreadCardLikeProps {
   post: PostType;
+  likedPosts: string;
 }
 
-export default function ThreadPostLike({ post }: ThreadPostLikeProps) {
-  //   const [isLoading, setIsLoading] = useState(false);
+export default function ThreadPostLike({
+  post,
+  likedPosts,
+}: ThreadCardLikeProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  //   const [likes, setLikes] = useState(0);
+  const [likes, setLikes] = useState(0);
+  const newLikeCount = isLiked ? likes - 1 : likes + 1;
 
-  //   async function fetchThread() {
-  //     setIsLoading(true);
-  //     try {
-  //       const response = await fetch(`${API_URL}/api/threads/${threadId}`, {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
+  async function fetchPost() {
+    setIsLoading(true);
 
-  //       const result: ResponseThread = await response.json();
+    setIsLiked(likedPosts.includes(`${post.id}`));
 
-  //       setLikes(result.data.posts[postId].likes);
-  //     } catch (error) {
-  //       setLikes(-1);
-  //       console.error(error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
+    try {
+      const response = await fetch(`${API_URL}/api/posts/${post.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result: ResponseThread = await response.json();
+
+      setLikes(result.data.likes);
+    } catch (error) {
+      setLikes(-1);
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   async function handleLike() {
-    // logic...
+    await fetch(`${API_URL}/api/posts/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authToken,
+      },
+      body: JSON.stringify({
+        id: post.id,
+        likes: newLikeCount,
+      }),
+    });
+
+    const userData: User = await fetchUserToken();
+    const newUserLikes = toggleLike(userData.dados.likedThreads, post.id);
+
+    await fetch(`${API_URL}/api/users/${userData.dados.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authToken,
+      },
+      body: JSON.stringify({
+        id: userData.dados.id,
+        likedPosts: newUserLikes,
+      }),
+    });
+
     setIsLiked(!isLiked);
   }
 
-  //   useEffect(() => {
-  //     fetchThread();
-  //   }, []);
+  useEffect(() => {
+    fetchPost();
+  }, []);
 
-  //   if (isLoading) {
-  //     return <Skeleton className="h-8 w-[3.5rem]" />;
-  //   }
+  if (isLoading) {
+    return <Skeleton className="h-8 w-[3.5rem]" />;
+  }
 
   return (
     <Button variant="ghost" size="sm" onClick={handleLike}>
@@ -53,7 +94,7 @@ export default function ThreadPostLike({ post }: ThreadPostLikeProps) {
           isLiked && "fill-red-500 stroke-red-500"
         }`}
       />
-      {post.likes}
+      {likes}
     </Button>
   );
 }

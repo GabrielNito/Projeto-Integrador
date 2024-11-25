@@ -7,13 +7,13 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { HeartIcon, MessageCircleIcon, LockIcon } from "lucide-react";
+import { MessageCircleIcon, LockIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PostType, UserType } from "../types";
 import { badgeStyles } from "@/utils/global.types";
 import ThreadCardLike from "./ThreadCardLike";
 
-interface ThreadProps {
+interface Thread {
   id: number;
   title: string;
   likes: number;
@@ -25,20 +25,25 @@ interface ThreadProps {
   user: UserType;
 }
 
-export default function ThreadCard({ thread }: { thread: ThreadProps }) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("pt-BR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
+interface ThreadProps {
+  thread: Thread;
+  likedThreads: number[];
+}
 
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("pt-BR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export default function ThreadCard({ thread, likedThreads }: ThreadProps) {
   return (
     <Card className="w-full bg-card text-card-foreground">
       <CardHeader className="flex flex-row items-center gap-4">
-        <Avatar className="h-12 w-12">
+        <Avatar className="w-12 h-12">
           <AvatarImage
             src={thread.user.avatar || undefined}
             alt={thread.user.username}
@@ -47,16 +52,16 @@ export default function ThreadCard({ thread }: { thread: ThreadProps }) {
             {thread.user.username.slice(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
-        <div className="w-full flex flex-col max-lg:gap-4">
+        <div className="flex flex-col w-full max-lg:gap-4">
           <Button
             variant="link"
-            className="w-fit text-lg font-semibold max-lg:text-wrap pl-0"
+            className="pl-0 text-lg font-semibold w-fit max-lg:text-wrap"
             asChild
           >
             <Link to={`/forum/${thread.id}`}>{thread.title}</Link>
           </Button>
 
-          <div className="w-full flex max-lg:flex-col lg:items-center justify-between gap-2">
+          <div className="flex justify-between w-full gap-2 max-lg:flex-col lg:items-center">
             <div className="flex gap-2">
               <span className="text-sm text-muted-foreground">
                 {thread.user.username}
@@ -81,10 +86,9 @@ export default function ThreadCard({ thread }: { thread: ThreadProps }) {
           <div className="space-y-4">
             {thread.posts.slice(0, 2).map((post) => (
               <Link to={`/forum/${thread.id}`} key={post.id} className="block">
-                <div className="bg-muted p-4 rounded-lg hover:bg-muted/80 transition-colors">
+                <div className="p-4 transition-colors rounded-lg bg-muted hover:bg-muted/80">
                   <p className="text-sm">{post.content}</p>
                   <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                    <HeartIcon className="h-4 w-4" /> {post.likes}
                     <span>{formatDate(post.createdAt)}</span>
                   </div>
                 </div>
@@ -101,18 +105,21 @@ export default function ThreadCard({ thread }: { thread: ThreadProps }) {
       </CardContent>
       <CardFooter className="flex justify-between">
         <div className="flex items-center gap-4">
-          <ThreadCardLike threadId={thread.id} />
-
+          <ThreadCardLike
+            likedThreads={likedThreads}
+            threadTitle={thread.title}
+            threadId={thread.id}
+          />
           <Button variant="ghost" size="sm" asChild>
             <Link to={`/forum/${thread.id}`}>
-              <MessageCircleIcon className="h-4 w-4 mr-2" />
+              <MessageCircleIcon className="w-4 h-4 mr-2" />
               {thread.posts.length}
             </Link>
           </Button>
         </div>
         {thread.isClosed && (
           <Badge variant="secondary">
-            <LockIcon className="h-3 w-3 mr-1" />
+            <LockIcon className="w-3 h-3 mr-1" />
             Closed
           </Badge>
         )}
