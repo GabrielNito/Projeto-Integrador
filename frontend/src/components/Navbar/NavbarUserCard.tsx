@@ -29,16 +29,16 @@ const user: UserType = {
   id: 1,
   username: "gabrielnito",
   email: "gabriel.nito@fatec.sp.gov.br",
-  role: "STUDENT",
+  role: "ADMIN",
   avatar: null,
 };
 
 interface NavbarUserCardProps {
-  notLogged?: boolean;
+  userLogged: boolean;
 }
 
-export default function NavbarUserCard({ notLogged }: NavbarUserCardProps) {
-  if (notLogged) {
+export default function NavbarUserCard({ userLogged }: NavbarUserCardProps) {
+  if (!userLogged) {
     return (
       <HoverCard>
         <HoverCardTrigger asChild>
@@ -86,7 +86,7 @@ export default function NavbarUserCard({ notLogged }: NavbarUserCardProps) {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between space-x-4">
             <Avatar>
-              <AvatarImage src="https://github.com/vercel.png" />
+              <AvatarImage src="" />
               <AvatarFallback>GA</AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-1">

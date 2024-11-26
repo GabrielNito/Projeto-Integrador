@@ -7,6 +7,7 @@ import { Badge, LucideIcon, Menu, MessagesSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fetchUserToken, User } from "../utils";
 import NavbarNotifications from "./NavbarNotifications";
+import NavbarUserCard from "./NavbarUserCard";
 
 interface Notification {
   title: string;
@@ -77,6 +78,7 @@ export default function Navbar() {
         <div className="flex gap-2 max-md:hidden">
           <NavMenu admin={isAdmin} logged={userLogged} />
           <NavbarNotifications notifications={test} />
+          <NavbarUserCard userLogged={userLogged} />
           <ModeToggle />
         </div>
       </nav>
