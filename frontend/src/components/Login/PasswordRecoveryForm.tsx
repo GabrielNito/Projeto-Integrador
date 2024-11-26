@@ -18,7 +18,7 @@ import { toast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: "Favor preencher o campo email.",
   }),
 });
 

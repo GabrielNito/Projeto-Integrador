@@ -7,12 +7,14 @@ import {
 import { Avatar, AvatarFallback } from "../../ui/avatar";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { API_URL, PostType, UserDataType } from "../types";
+import { PostType, UserDataType } from "../types";
 import ThreadPostLoading from "./ThreadPostLoading";
 import ThreadPostError from "./ThreadPostError";
 import { badgeStyles } from "@/utils/global.types";
 import ThreadPostLike from "./ThreadPostLike";
-import { authToken, fetchUserToken, User } from "@/components/utils";
+import { API_URL, authToken, fetchUserToken, User } from "@/components/utils";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 interface Response {
   message: string;
@@ -21,9 +23,10 @@ interface Response {
 
 interface ThreadPostProps {
   post: PostType;
+  variant?: "default" | "dashboard";
 }
 
-export default function ThreadPost({ post }: ThreadPostProps) {
+export default function ThreadPost({ post, variant }: ThreadPostProps) {
   const [user, setUser] = useState<UserDataType>();
   const [error, setError] = useState<string | null>(null);
   const [userLikes, setUserLikes] = useState("");
@@ -95,8 +98,13 @@ export default function ThreadPost({ post }: ThreadPostProps) {
         <CardContent>
           <p>{post.content}</p>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex justify-between">
           <ThreadPostLike post={post} likedPosts={userLikes} />
+          {variant && (
+            <Button variant="outline" asChild>
+              <Link to={`/forum/${post.threadId}`}>Ir para a Thread</Link>
+            </Button>
+          )}
         </CardFooter>
       </Card>
     );

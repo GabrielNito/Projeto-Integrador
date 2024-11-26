@@ -52,12 +52,12 @@ export class UsersService {
   }
 
   async getUserById(id: number, req: Request) {
-    const user = req.user;
+    // const user = req.user;
     const data = await this._userRepository.findById(id);
 
-    if (user?.role !== "ADMIN") {
-      throw Error("Operation not allowed");
-    }
+    // if (user?.role !== "ADMIN") {
+    //   throw Error("Operation not allowed");
+    // }
     if (!data) {
       throw Error("User not found");
     }

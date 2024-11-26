@@ -10,7 +10,6 @@ import Estatisticas from "./Pages/Dashboard/Admin/Estatisticas";
 import { ThemeProvider } from "./components/theme-provider";
 import Atividade from "./Pages/Dashboard/Atividade";
 import GerenciamentoDeUsuarios from "./Pages/Dashboard/Admin/GerenciamentoDeUsuarios";
-import MensagensAprovadas from "./Pages/Dashboard/Admin/MensagensAprovadas";
 import General from "./components/Dashboard/General";
 import Login from "./Pages/Login/Login";
 import SignIn from "./Pages/Login/SignIn";
@@ -20,6 +19,7 @@ import Forum from "./Pages/Threads/Threads";
 import Conta from "./Pages/Dashboard/Conta";
 import CreateThread from "./Pages/Threads/CreateThread";
 import CommentThread from "./Pages/Threads/CommentThread";
+import GerenciamentoDeThreads from "./Pages/Dashboard/Admin/GerenciamentoDeThreads";
 
 const router = createBrowserRouter([
   {
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/gerenciamento-de-threads",
-        element: <MensagensAprovadas />,
+        element: <GerenciamentoDeThreads />,
       },
     ],
   },

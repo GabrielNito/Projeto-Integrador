@@ -16,6 +16,11 @@ import {
 
 const sections = [
   {
+    title: "Fórum",
+    description: "Acesse nosso fórum.",
+    action: "/forum",
+  },
+  {
     title: "Criar uma nova Thread",
     description: "Poste uma nova Thread em nosso fórum.",
     action: "/forum/create-thread",
@@ -46,20 +51,16 @@ export function NavMenu({
     return (
       <div className="flex flex-col items-center justify-between h-full">
         <div className="flex flex-col gap-2">
-          <Link to="/forum">
+          <Link to="/">
             <Button variant="ghost">O Curso</Button>
           </Link>
 
-          <Link to="/">
+          <Link to="/forum">
             <Button variant="ghost">Fórum</Button>
           </Link>
-          {sections.map((item, index: number) => {
-            return (
-              <Link key={index} to={item.action} className="ml-4">
-                <Button variant="ghost">{item.title}</Button>
-              </Link>
-            );
-          })}
+          <Link to="/forum/create-thread" className="ml-4">
+            <Button variant="ghost">Criar uma nova Thread</Button>
+          </Link>
 
           {admin ? (
             <Link to="/dashboard">
@@ -94,7 +95,7 @@ export function NavMenu({
   }
   return (
     <div className="flex gap-2">
-      <Link to="/forum">
+      <Link to="/">
         <Button variant="ghost">O Curso</Button>
       </Link>
       <NavigationMenu>

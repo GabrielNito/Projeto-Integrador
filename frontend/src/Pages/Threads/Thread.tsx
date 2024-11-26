@@ -1,7 +1,8 @@
 import ThreadHeader from "@/components/Forum/Thread/ThreadHeader";
 import ThreadPost from "@/components/Forum/Thread/ThreadPost";
-import { API_URL, ResponseThread, ThreadType } from "@/components/Forum/types";
+import { ResponseThread, ThreadType } from "@/components/Forum/types";
 import Navbar from "@/components/Navbar/Navbar";
+import { API_URL } from "@/components/utils";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 

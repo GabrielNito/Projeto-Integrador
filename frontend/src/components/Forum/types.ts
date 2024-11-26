@@ -1,6 +1,3 @@
-export const API_URL =
-  import.meta.env.VITE_FETCH_URL || "http://localhost:3001";
-
 export interface PostType {
   id: number;
   content: string;

@@ -1,20 +1,18 @@
 export const API_URL =
-  import.meta.env.VITE_FETCH_URL || "http://localhost:3001";
+  import.meta.env.VITE_FETCH_URL ||
+  "https://projeto-integrador-api.onrender.com";
 
 export const authToken = localStorage.getItem("auth-token") || "";
 
 export async function fetchUserToken(): Promise<User> {
   try {
-    const response = await fetch(
-      "http://localhost:3001/api/login/authenticateByToken",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token: localStorage.getItem("auth-token") }),
-      }
-    );
+    const response = await fetch(`${API_URL}/api/login/authenticateByToken`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: localStorage.getItem("auth-token") }),
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

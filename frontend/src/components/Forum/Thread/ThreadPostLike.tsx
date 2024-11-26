@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { HeartIcon } from "lucide-react";
-import { API_URL, PostType, ResponseThread } from "../types";
+import { PostType, ResponseThread } from "../types";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
+  API_URL,
   authToken,
   fetchUserToken,
   toggleLike,

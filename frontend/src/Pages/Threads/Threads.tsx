@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import ThreadCardLoading from "../../components/Forum/Threads/ThreadCardLoading";
 import ThreadCardError from "../../components/Forum/Threads/ThreadCardError";
 import ThreadCard from "../../components/Forum/Threads/ThreadCard";
-import { API_URL, ResponseThreads, ThreadType } from "@/components/Forum/types";
-import { fetchUserToken } from "@/components/utils";
+import { ResponseThreads, ThreadType } from "@/components/Forum/types";
+import { API_URL, fetchUserToken } from "@/components/utils";
 
 export default function Forum() {
   const [isLoading, setIsLoading] = useState(false);

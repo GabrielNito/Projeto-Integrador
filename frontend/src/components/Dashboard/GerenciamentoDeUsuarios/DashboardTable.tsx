@@ -106,8 +106,6 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const badges = row.original.badges;
 
-      console.log(badges);
-
       return badges && badges.length > 0 ? (
         <div className="flex gap-2">
           {badges ? (
