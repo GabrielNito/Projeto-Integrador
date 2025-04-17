@@ -78,7 +78,7 @@ export default function Navbar() {
         <div className="flex gap-2 max-md:hidden">
           <NavMenu admin={isAdmin} logged={userLogged} />
           <NavbarNotifications notifications={test} />
-          <NavbarUserCard userLogged={userLogged} />
+          <NavbarUserCard />
           <ModeToggle />
         </div>
       </nav>
