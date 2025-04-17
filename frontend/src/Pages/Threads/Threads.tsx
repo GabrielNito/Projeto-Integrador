@@ -5,6 +5,9 @@ import ThreadCardError from "../../components/Forum/Threads/ThreadCardError";
 import ThreadCard from "../../components/Forum/Threads/ThreadCard";
 import { ResponseThreads, ThreadType } from "@/components/Forum/types";
 import { API_URL, fetchUserToken } from "@/components/utils";
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Forum() {
   const [isLoading, setIsLoading] = useState(false);
@@ -65,6 +68,16 @@ export default function Forum() {
           Espaço para troca de conhecimento e discussão: compartilhe ideias,
           dúvidas, experiências, dicas e colabore com a comunidade
         </h2>
+        <Button
+          variant="outline"
+          className="flex items-center gap-1 w-fit"
+          asChild
+        >
+          <Link to="/forum/criar-topico">
+            Criar uma novo tópico
+            <ExternalLink className="w-4 h-4" />
+          </Link>
+        </Button>
 
         <div className="grid w-full grid-cols-1 gap-4 lg:grid-cols-2">
           {threads.map((thread) => {

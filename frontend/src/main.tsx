@@ -20,6 +20,7 @@ import Conta from "./Pages/Dashboard/Conta";
 import CreateThread from "./Pages/Threads/CreateThread";
 import CommentThread from "./Pages/Threads/CommentThread";
 import GerenciamentoDeThreads from "./Pages/Dashboard/Admin/GerenciamentoDeThreads";
+import CertificationsPage from "./Pages/Certifications/CertificationsPage";
 
 const router = createBrowserRouter([
   {
@@ -27,11 +28,15 @@ const router = createBrowserRouter([
     element: <HomePage />,
   },
   {
+    path: "/certificacoes",
+    element: <CertificationsPage />,
+  },
+  {
     path: "/forum",
     element: <Forum />,
   },
   {
-    path: "/forum/create-thread",
+    path: "/forum/criar-topico",
     element: <CreateThread />,
   },
   {

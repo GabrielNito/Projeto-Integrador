@@ -43,7 +43,7 @@ export default function NavbarNotifications({
         <DropdownMenuLabel>Notificações</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {notifications.length === 0 ? (
-          <div className="flex justify-content items-center p-4">
+          <div className="flex items-center p-4 justify-content">
             <h1>Nenhuma notificação pendente</h1>
           </div>
         ) : null}
@@ -58,7 +58,7 @@ export default function NavbarNotifications({
                 }
               }}
             >
-              <div className="flex flex-row justify-center items-center gap-2">
+              <div className="flex flex-row items-center justify-center gap-2">
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <notification.icon className="w-6 h-6" />

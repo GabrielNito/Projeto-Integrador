@@ -27,6 +27,11 @@ export default function SidebarFooter({
   name,
   email,
 }: SidebarFooterProps) {
+  function handleLogout() {
+    localStorage.removeItem("auth-token");
+    window.location.href = "/";
+  }
+
   return (
     <div className="absolute left-0 right-0 flex flex-col items-center justify-center gap-2 px-3 bottom-4">
       <div
@@ -78,7 +83,11 @@ export default function SidebarFooter({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={() => {}}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleLogout()}
+              >
                 <LogOut className="w-4 h-4" />
               </Button>
             </TooltipTrigger>

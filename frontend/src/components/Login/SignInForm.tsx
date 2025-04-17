@@ -27,7 +27,7 @@ const formSchema = z.object({
       message: "Insira um email válido.",
     })
     .refine((email) => email.endsWith("@fatec.sp.gov.br"), {
-      message: "Email must belong to the @fatec.sp.gov.br domain.",
+      message: "O Email precisa pertencer ao dominio @fatec.sp.gov.br.",
     }),
   password: z.string().min(8, {
     message: "A senha precisa ter pelo menos 8 caracteres.",
@@ -89,7 +89,7 @@ export default function LoginForm() {
             <FormItem>
               <FormLabel>Nome</FormLabel>
               <FormControl>
-                <Input placeholder="Seu nome" {...field} />
+                <Input placeholder="Seu nome" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -102,7 +102,11 @@ export default function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="email@fatec.sp.gov.br" {...field} />
+                <Input
+                  placeholder="email@fatec.sp.gov.br"
+                  type="email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -1,115 +1,132 @@
+"use client";
+
 import { LogOut, Settings, User2, UserX } from "lucide-react";
 import { Button } from "../ui/button";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../ui/hover-card";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Separator } from "../ui/separator";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Link } from "react-router-dom";
 import { badgeStyles } from "@/utils/global.types";
+import { useEffect, useState } from "react";
+import { fetchUserToken, type UserData } from "../utils";
 
-export interface UserType {
-  id: number;
-  username: string;
-  password?: string;
-  email: string;
-  role: "STUDENT" | "ADMIN";
-  createAt?: string;
-  updateAt?: string;
-  likedPosts?: string;
-  likedThreads?: string;
-  avatar: string | null;
-  badges?: string;
-}
+export default function NavbarUserCard() {
+  const [user, setUser] = useState<UserData | null>(null);
 
-const user: UserType = {
-  id: 1,
-  username: "gabrielnito",
-  email: "gabriel.nito@fatec.sp.gov.br",
-  role: "ADMIN",
-  avatar: null,
-};
+  function handleLogout() {
+    localStorage.removeItem("auth-token");
+    window.location.reload();
+  }
 
-interface NavbarUserCardProps {
-  userLogged: boolean;
-}
+  async function fetchUser(): Promise<any | null> {
+    const data = await fetchUserToken();
+    setUser(data.dados);
+    if (!data) return null;
+  }
 
-export default function NavbarUserCard({ userLogged }: NavbarUserCardProps) {
-  if (!userLogged) {
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  if (user) {
     return (
-      <HoverCard>
-        <HoverCardTrigger asChild>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
           <Button size="icon" variant="ghost">
             <User2 className="w-4 h-4" />
           </Button>
-        </HoverCardTrigger>
-        <HoverCardContent>
-          <div className="flex flex-col gap-4">
-            <div className="flex justify-between space-x-4">
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="end"
+          sideOffset={8}
+          avoidCollisions={true}
+          collisionPadding={16}
+        >
+          <div className="flex justify-between space-x-2 px-2 py-1.5">
+            <div className="flex flex-col gap-2">
               <Avatar>
-                <AvatarFallback className="bg-destructive/10 text-destructive">
-                  <UserX className="w-4 h-4" />
+                <AvatarFallback>
+                  {user.username.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex flex-col gap-1">
-                <h4 className="text-sm font-semibold">Usuário não logado</h4>
-                <p className="text-sm text-muted-foreground">
-                  Faça login para ter acesso aos recursos do site
-                </p>
-              </div>
             </div>
-            <Separator />
-            <div className="flex flex-col gap-1">
-              <Button variant="ghost" className="flex gap-2" asChild>
-                <Link to="/login">
-                  <User2 className="w-4 h-4" /> Login
-                </Link>
-              </Button>
+
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <h4 className="text-sm font-semibold">{user.username}</h4>
+                <Badge
+                  className={`w-fit text-[.65rem] p-1.5 py-[.125rem] ${
+                    user && badgeStyles[user.role]
+                  }`}
+                >
+                  {user?.role}
+                </Badge>
+              </div>
+
+              <p className="text-sm text-muted-foreground">{user.email}</p>
             </div>
           </div>
-        </HoverCardContent>
-      </HoverCard>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem asChild>
+            <Link
+              to="/dashboard"
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <Settings className="w-4 h-4" /> Configurações
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="w-4 h-4 mr-2" /> Sair
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   }
 
   return (
-    <HoverCard>
-      <HoverCardTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <Button size="icon" variant="ghost">
           <User2 className="w-4 h-4" />
         </Button>
-      </HoverCardTrigger>
-      <HoverCardContent>
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between space-x-4">
-            <Avatar>
-              <AvatarImage src="" />
-              <AvatarFallback>GA</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col gap-1">
-              <h4 className="text-sm font-semibold">{user.username}</h4>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
-              <Badge className={`w-fit ${user && badgeStyles[user.role]}`}>
-                {user?.role}
-              </Badge>
-            </div>
-          </div>
-          <Separator />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        sideOffset={8}
+        avoidCollisions={true}
+        collisionPadding={16}
+      >
+        <div className="flex justify-between space-x-4 px-2 py-1.5">
+          <Avatar>
+            <AvatarFallback className="bg-destructive/20 dark:bg-red-900/50 text-destructive">
+              <UserX className="w-4 h-4 dark:stroke-red-500" />
+            </AvatarFallback>
+          </Avatar>
           <div className="flex flex-col gap-1">
-            <Button variant="ghost" className="flex gap-2" asChild>
-              <Link to="/dashboard">
-                <Settings className="w-4 h-4" /> Configurações
-              </Link>
-            </Button>
-            <Button variant="ghost" className="flex gap-2">
-              <LogOut className="w-4 h-4" /> Sair
-            </Button>
+            <h4 className="text-sm font-semibold">Usuário não logado</h4>
+            <p className="text-sm text-muted-foreground">
+              Faça login para ter acesso aos recursos do site
+            </p>
           </div>
         </div>
-      </HoverCardContent>
-    </HoverCard>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem asChild>
+          <Link to="/login" className="flex items-center gap-2 cursor-pointer">
+            <User2 className="w-4 h-4" /> Fazer Login
+          </Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

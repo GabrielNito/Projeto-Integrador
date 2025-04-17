@@ -77,7 +77,9 @@ export default function CreateThread() {
       <Navbar />
 
       <section className="p-4 lg:w-[calc(100%-2rem)] lg:px-20 lg:py-12 flex flex-col gap-4">
-        <h1 className="text-2xl font-semibold">Criar uma nova Thread</h1>
+        <h1 className="text-2xl font-semibold">
+          O que você gostaria de saber?
+        </h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -85,16 +87,16 @@ export default function CreateThread() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Título</FormLabel>
+                  <FormLabel>Pergunta</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Digite o título da thread"
+                      placeholder="Digite sua dúvida, experiência, ideia ou dica aqui..."
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    O título deve ter no máximo 300 caracteres.
+                    Seu tópico pode ter até 300 caracteres.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
